@@ -20,8 +20,7 @@ Or install it yourself as:
 
     $ gem install mail-notify
 
-Then, add the following to your `config/environments/*.rb` (where * is `test`, `development`, `production` or 
-whatever other environment(s) you have) file(s):
+Then, add the following to your `config/environments/*.rb` (where * is `test`, `development`, `production` or whatever other environment(s) you have) file(s):
 
 ```ruby
 config.action_mailer.delivery_method = :notify
@@ -30,21 +29,27 @@ config.action_mailer.notify_settings = {
 }
 ```
 
-## Usage
+### Mailers
 
-This gem assumes you have a very simple template set up in Notify, with a `((subject))` variable
-in the subject line, and a `((body))` variable in the body field, as below:
+There are two options for using `Mail::Notify`, either templating in Rails with a view, or templating in Notify. Whichever way you choose, you'll need your mailers to inherit from `Mail::Notify::Mailer` like so:
+
+```ruby
+class MyMailer < Mail::Notify::Mailer
+end
+```
+
+#### With a view
+
+Out of the box, Notify offers support for templating, with some rudimentary logic included. If you'd rather have your templating logic included with your source code for ease of access, or you want to do some more complex logic that's not supported by Notify, you can template your mailer views in erb.
+
+For this to work with Notify, you'll need a very simple template set up in Notify, with a `((subject))` variable in the subject line, and a `((body))` variable in the body field, as below:
 
 ![Example screenshot](docs/screenshot.png)
 
-Support for further customisations may come further down the road.
-
-### Mailers
-
-When using mailers, instead of inheriting from `ActionMailer::Base`, you'll need to inherit from `Mail::Notify::ViewMailer`, and instead of calling `mail` with a hash of email headers, you'll need to call `notify_mail` with the first parameter being the ID of the notify template, followed by a hash of email headers e.g:
+Next, in your mailer you'll need to call `view_mail` with the first parameter being the ID of the notify template, followed by a hash of email headers e.g:
 
 ```ruby
-class MyMailer < Mail::Notify::ViewMailer
+class MyMailer < Mail::Notify::Mailer
     def send_email
         notify_mail('YOUR_TEMPLATE_ID_GOES_HERE',
           to: 'mail@somewhere.com',
@@ -54,9 +59,24 @@ class MyMailer < Mail::Notify::ViewMailer
 end
 ```
 
-### Views
+Your view can then be a simple `text.erb` file. You can add some markdown for headers, bullet points and links etc. These are handled in the same way as standard action_mailer views.
 
-Views should be simple `text.erb` files. You can add some markdown for headers, bullet points and links etc. These are handled in the same way as standard action_mailer views.
+#### With Notify templating
+
+You can also send your customisations in the more traditional way, and do your templating in Notify if you prefer. For this, you'll need to call `template_mail`, again with the first parameter being the ID of the template, and a hash of email headers, including your personalisations, e.g:
+
+```ruby
+class MyMailer < Mail::Notify::Mailer
+    def send_email
+        template_mail('YOUR_TEMPLATE_ID_GOES_HERE',
+          to: 'mail@somewhere.com',
+          personalisations: {
+              foo: 'bar'
+          }
+        )
+    end
+end
+```
 
 ## Development
 

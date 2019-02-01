@@ -5,6 +5,8 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-    - 'lib/mail/notify.rb'
-    - 'lib/mail/notify/delivery_method.rb'
-    - 'lib/mail/notify/railtie.rb'
+    - 'lib/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'

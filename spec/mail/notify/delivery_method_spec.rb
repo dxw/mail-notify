@@ -11,23 +11,46 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     }
   end
 
-  let(:mailer) { TestMailer.my_mail }
+  context 'with a view' do
+    let(:mailer) { TestMailer.my_mail }
 
-  it 'has access to the settings' do
-    expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
+    it 'has access to the settings' do
+      expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
+    end
+
+    it 'calls Notify\'s send_email service with the correct details ' do
+      notify = double(:notify)
+      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      expect(notify).to receive(:send_email).with(
+        email_address: 'myemail@gmail.com',
+        template_id: 'template-id',
+        personalisation: {
+          body: "# bar\r\n\r\nBar baz",
+          subject: 'Hello there!'
+        }
+      )
+      mailer.deliver!
+    end
   end
 
-  it 'calls Notify\'s send_email service with the correct details ' do
-    notify = double(:notify)
-    expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-    expect(notify).to receive(:send_email).with(
-      email_address: 'myemail@gmail.com',
-      template_id: 'template-id',
-      personalisation: {
-        body: "# bar\r\n\r\nBar baz",
-        subject: 'Hello there!'
-      }
-    )
-    TestMailer.my_mail.deliver!
+  context 'with a template' do
+    let(:mailer) { TestMailer.my_other_mail }
+
+    it 'has access to the settings' do
+      expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
+    end
+
+    it 'calls Notify\'s send_email service with the correct details ' do
+      notify = double(:notify)
+      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      expect(notify).to receive(:send_email).with(
+        email_address: 'myemail@gmail.com',
+        template_id: 'template-id',
+        personalisation: {
+          foo: 'bar'
+        }
+      )
+      mailer.deliver!
+    end
   end
 end

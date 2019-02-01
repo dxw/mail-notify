@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mail-notify (0.1.0)
+    mail-notify (0.0.2)
       actionmailer (~> 5.0)
       notifications-ruby-client (~> 2.0)
 
