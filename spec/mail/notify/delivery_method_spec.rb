@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Mail::Notify::DeliveryMethod do
@@ -18,14 +20,14 @@ RSpec.describe Mail::Notify::DeliveryMethod do
   it 'calls Notify\'s send_email service with the correct details ' do
     notify = double(:notify)
     expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-    expect(notify).to receive(:send_email).with({
+    expect(notify).to receive(:send_email).with(
       email_address: 'myemail@gmail.com',
       template_id: 'template-id',
       personalisation: {
         body: "# bar\r\n\r\nBar baz",
         subject: 'Hello there!'
       }
-    })
+    )
     TestMailer.my_mail.deliver!
   end
 end
