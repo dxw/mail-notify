@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/pezholio/mail-notify.svg?style=svg)](https://circleci.com/gh/pezholio/mail-notify)
+
 # Mail::Notify
 
 Rails / ActionMailer support for the [GOV.UK Notify API](https://www.notifications.service.gov.uk).
