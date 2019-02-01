@@ -41,15 +41,14 @@ Support for further customisations may come further down the road.
 
 ### Mailers
 
-Using mailers is pretty much identical to as if you were using any other action_mailer delivery method, the only difference is you'll need to add your `template_id` to your call to `mail`, eg:
+When using mailers, instead of inheriting from `ActionMailer::Base`, you'll need to inherit from `Mail::Notify::ViewMailer`, and instead of calling `mail` with a hash of email headers, you'll need to call `notify_mail` with the first parameter being the ID of the notify template, followed by a hash of email headers e.g:
 
 ```ruby
-class MyMailer < ApplicationMailer
+class MyMailer < Mail::Notify::ViewMailer
     def send_email
-        mail(
+        notify_mail('YOUR_TEMPLATE_ID_GOES_HERE',
           to: 'mail@somewhere.com',
-          subject: 'Subject line goes here',
-          template_id: 'YOUR_TEMPLATE_ID_GOES_HERE'
+          subject: 'Subject line goes here'
         )
     end
 end

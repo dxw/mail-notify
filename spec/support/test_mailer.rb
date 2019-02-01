@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class TestMailer < ActionMailer::Base
+class TestMailer < Mail::Notify::ViewMailer
   def my_mail
     @foo = 'bar'
-    mail(to: 'myemail@gmail.com',
-         template_id: 'template-id',
-         subject: 'Hello there!')
+    notify_mail('template-id',
+                to: 'myemail@gmail.com',
+                subject: 'Hello there!')
   end
 end
