@@ -11,8 +11,7 @@ module Mail
 
       def deliver!(mail)
         @mail = mail
-        @personalisation = Personalisation.new(@mail)
-        initialize_params
+        @personalisation = Personalisation.new(mail)
         send_email
       end
 
@@ -22,8 +21,8 @@ module Mail
         @client ||= Notifications::Client.new(@settings[:api_key])
       end
 
-      def initialize_params
-        @email_params = {
+      def email_params
+        {
           email_address: @mail.to.first,
           template_id: @mail[:template_id].to_s,
           personalisation: @personalisation.to_h
@@ -31,7 +30,7 @@ module Mail
       end
 
       def send_email
-        client.send_email(@email_params)
+        client.send_email(email_params)
       end
     end
   end
