@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/pezholio/mail-notify.svg?style=svg)](https://circleci.com/gh/pezholio/mail-notify)
+[![CircleCI](https://circleci.com/gh/pezholio/mail-notify.svg?style=svg)](https://circleci.com/gh/pezholio/mail-notify) [![Gem Version](https://badge.fury.io/rb/mail-notify.png)](https://badge.fury.io/rb/mail-notify)
 
 # Mail::Notify
 
