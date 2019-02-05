@@ -3,7 +3,7 @@
 module Mail
   module Notify
     class DeliveryMethod
-      attr_accessor :settings
+      attr_accessor :settings, :response
 
       def initialize(settings)
         @settings = settings
@@ -30,7 +30,7 @@ module Mail
       end
 
       def send_email
-        client.send_email(email_params)
+        @response = client.send_email(email_params)
       end
     end
   end

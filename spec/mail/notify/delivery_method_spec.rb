@@ -11,6 +11,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     }
   end
 
+  let(:notify) { double(:notify) }
+
   context 'with a view' do
     let(:mailer) { TestMailer.my_mail }
 
@@ -19,7 +21,6 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     end
 
     it 'calls Notify\'s send_email service with the correct details ' do
-      notify = double(:notify)
       expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
       expect(notify).to receive(:send_email).with(
         email_address: 'myemail@gmail.com',
@@ -31,6 +32,15 @@ RSpec.describe Mail::Notify::DeliveryMethod do
       )
       mailer.deliver!
     end
+
+    it 'gives access to the response' do
+      response = double(:response)
+      allow(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      allow(notify).to receive(:send_email) { response }
+      mailer.deliver!
+
+      expect(mailer.delivery_method.response).to eq(response)
+    end
   end
 
   context 'with a template' do
@@ -41,7 +51,6 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     end
 
     it 'calls Notify\'s send_email service with the correct details ' do
-      notify = double(:notify)
       expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
       expect(notify).to receive(:send_email).with(
         email_address: 'myemail@gmail.com',
@@ -51,6 +60,15 @@ RSpec.describe Mail::Notify::DeliveryMethod do
         }
       )
       mailer.deliver!
+    end
+
+    it 'gives access to the response' do
+      response = double(:response)
+      allow(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      allow(notify).to receive(:send_email) { response }
+      mailer.deliver!
+
+      expect(mailer.delivery_method.response).to eq(response)
     end
   end
 end
