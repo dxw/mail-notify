@@ -1,6 +1,7 @@
 [![CircleCI Status](https://img.shields.io/circleci/project/github/pezholio/mail-notify.svg?style=flat-square)](https://circleci.com/gh/pezholio/mail-notify)
 [![Coverage Status](https://img.shields.io/coveralls/github/pezholio/mail-notify.svg?style=flat-square)](https://coveralls.io/github/pezholio/mail-notify)
 [![Gem Version](http://img.shields.io/gem/v/mail-notify.svg?style=flat-square)](https://rubygems.org/gems/mail-notify)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
 
 # Mail::Notify
 
