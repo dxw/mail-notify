@@ -1,4 +1,6 @@
-[![CircleCI](https://circleci.com/gh/pezholio/mail-notify.svg?style=svg)](https://circleci.com/gh/pezholio/mail-notify) [![Gem Version](https://badge.fury.io/rb/mail-notify.png)](https://badge.fury.io/rb/mail-notify)
+[![CircleCI Status](https://img.shields.io/circleci/project/github/pezholio/mail-notify.svg?style=flat-square)](https://circleci.com/gh/pezholio/mail-notify)
+[![Coverage Status](https://img.shields.io/coveralls/github/pezholio/mail-notify.svg?style=flat-square)](https://coveralls.io/github/pezholio/mail-notify)
+[![Gem Version](http://img.shields.io/gem/v/mail-notify.svg?style=flat-square)](https://rubygems.org/gems/mail-notify)
 
 # Mail::Notify
 
