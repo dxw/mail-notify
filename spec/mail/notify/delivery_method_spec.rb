@@ -12,6 +12,7 @@ RSpec.describe Mail::Notify::DeliveryMethod do
   end
 
   let(:notify) { double(:notify) }
+  let(:preview) { double(Notifications::Client::TemplatePreview) }
 
   context 'with a view' do
     let(:mailer) { TestMailer.my_mail }
@@ -41,6 +42,18 @@ RSpec.describe Mail::Notify::DeliveryMethod do
 
       expect(mailer.delivery_method.response).to eq(response)
     end
+
+    it 'shows a preview' do
+      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      expect(notify).to receive(:generate_template_preview)
+        .with('template-id',
+              personalisation: {
+                body: "# bar\r\n\r\nBar baz",
+                subject: 'Hello there!'
+              }) { preview }
+
+      mailer.preview
+    end
   end
 
   context 'with a template' do
@@ -69,6 +82,16 @@ RSpec.describe Mail::Notify::DeliveryMethod do
       mailer.deliver!
 
       expect(mailer.delivery_method.response).to eq(response)
+    end
+
+    it 'shows a preview' do
+      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+      expect(notify).to receive(:generate_template_preview).with('template-id',
+                                                                 personalisation: {
+                                                                   foo: 'bar'
+                                                                 }) { preview }
+
+      mailer.preview
     end
   end
 end

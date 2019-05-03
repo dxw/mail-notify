@@ -15,6 +15,12 @@ module Mail
         send_email
       end
 
+      def preview(mail)
+        personalisation = Personalisation.new(mail).to_h
+        template_id = mail[:template_id].to_s
+        client.generate_template_preview(template_id, personalisation: personalisation)
+      end
+
       private
 
       def client
