@@ -81,6 +81,10 @@ class MyMailer < Mail::Notify::Mailer
 end
 ```
 
+## Previews
+
+If you're using ActionMailer with Rails, [previews](https://guides.rubyonrails.org/action_mailer_basics.html#previewing-emails) are supported too, and work in the same way as standard previews. Currently they're shown without any branding, but this may change in future.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
