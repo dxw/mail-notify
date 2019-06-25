@@ -54,7 +54,7 @@ Next, in your mailer you'll need to call `view_mail` with the first parameter be
 ```ruby
 class MyMailer < Mail::Notify::Mailer
     def send_email
-        notify_mail('YOUR_TEMPLATE_ID_GOES_HERE',
+        view_mail('YOUR_TEMPLATE_ID_GOES_HERE',
           to: 'mail@somewhere.com',
           subject: 'Subject line goes here'
         )
