@@ -31,12 +31,13 @@ module Mail
         {
           email_address: @mail.to.first,
           template_id: @mail[:template_id].to_s,
-          personalisation: @personalisation.to_h
+          personalisation: @personalisation.to_h,
+          email_reply_to_id: @mail[:reply_to_id].presence&.to_s
         }
       end
 
       def send_email
-        @response = client.send_email(email_params)
+        @response = client.send_email(email_params.compact)
       end
     end
   end
