@@ -95,15 +95,16 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     end
   end
 
-  context 'with a custom reply_to_id' do
-    let(:mailer) { TestMailer.my_mail_custom_reply_to }
+  context 'with optional fields included' do
+    let(:mailer) { TestMailer.my_mail_optional_fields }
 
-    it 'calls Notify\'s send_email service with the correct details ' do
+    it 'calls Notify’s send_email service with the optional fields' do
       expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
       expect(notify).to receive(:send_email).with(
         email_address: 'email@gmail.com',
         template_id: 'template-id',
         email_reply_to_id: 'custom-reply-to-id',
+        reference: 'ABC123XYZ',
         personalisation: {
           body: "Foo\r\n",
           subject: 'Hello there!'

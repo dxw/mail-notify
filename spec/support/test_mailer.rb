@@ -16,10 +16,11 @@ class TestMailer < Mail::Notify::Mailer
                   })
   end
 
-  def my_mail_custom_reply_to
+  def my_mail_optional_fields
     view_mail('template-id',
-      to: 'email@gmail.com',
-      subject: 'Hello there!',
-      reply_to_id: 'custom-reply-to-id')
+              to: 'email@gmail.com',
+              subject: 'Hello there!',
+              reply_to_id: 'custom-reply-to-id',
+              reference: 'ABC123XYZ')
   end
 end
