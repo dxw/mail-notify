@@ -81,6 +81,28 @@ class MyMailer < Mail::Notify::Mailer
 end
 ```
 
+#### With optional Notify arguments
+
+It's possible to pass two optional arguments to Notify:
+
+- `reply_to_id`: This is an email reply-to address specified by you to receive replies from your users
+- `reference`: A unique identifier you can create if necessary. This reference identifies a single unique notification or a batch of notifications
+
+More information can be [found in the docs](https://docs.notifications.service.gov.uk/ruby.html#send-an-email-arguments-personalisation-optional)
+
+```ruby
+class MyMailer < Mail::Notify::Mailer
+    def send_email
+        view_mail('YOUR_TEMPLATE_ID_GOES_HERE',
+          to: 'mail@somewhere.com',
+          subject: 'Subject line goes here',
+          reply_to_id: 'YOUR_REPLY_TO_ID_GOES_HERE',
+          reference: 'ABC123XYZ'
+        )
+    end
+end
+```
+
 ## Previews
 
 If you're using ActionMailer with Rails, [previews](https://guides.rubyonrails.org/action_mailer_basics.html#previewing-emails) are supported too, and work in the same way as standard previews. Currently they're shown without any branding, but this may change in future.
