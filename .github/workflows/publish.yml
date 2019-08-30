@@ -1,0 +1,23 @@
+name: Publish to rubygems
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Setup Rubygems
+      run: |
+        bash .github/setup-rubygems.sh
+    - name: Publish to Rubygems
+      run: |
+        gem build mail-notify.gemspec
+        gem push "mail-notify-$(git describe --tags).gem"
