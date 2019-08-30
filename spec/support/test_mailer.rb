@@ -15,4 +15,12 @@ class TestMailer < Mail::Notify::Mailer
                     foo: 'bar'
                   })
   end
+
+  def my_mail_optional_fields
+    view_mail('template-id',
+              to: 'email@gmail.com',
+              subject: 'Hello there!',
+              reply_to_id: 'custom-reply-to-id',
+              reference: 'ABC123XYZ')
+  end
 end

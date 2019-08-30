@@ -31,12 +31,18 @@ module Mail
         {
           email_address: @mail.to.first,
           template_id: @mail[:template_id].to_s,
-          personalisation: @personalisation.to_h
+          personalisation: @personalisation.to_h,
+          email_reply_to_id: optional_param(:reply_to_id),
+          reference: optional_param(:reference)
         }
       end
 
+      def optional_param(name)
+        @mail[name].presence&.to_s
+      end
+
       def send_email
-        @response = client.send_email(email_params)
+        @response = client.send_email(email_params.compact)
       end
     end
   end
