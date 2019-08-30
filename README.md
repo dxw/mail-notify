@@ -1,4 +1,4 @@
-[![CircleCI Status](https://img.shields.io/circleci/build/gh/dxw/mail-notify.svg?style=flat-square)](https://circleci.com/gh/dxw/mail-notify)
+[![Build Status](https://github.com/dxw/mail-notify/workflows/Build/badge.svg)](https://github.com/dxw/mail-notify/actions)
 [![Coverage Status](https://img.shields.io/coveralls/github/pezholio/mail-notify.svg?style=flat-square)](https://coveralls.io/github/pezholio/mail-notify)
 [![Gem Version](http://img.shields.io/gem/v/mail-notify.svg?style=flat-square)](https://rubygems.org/gems/mail-notify)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
