@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [0.2.0] - 2019-08-30
+
 - Add Rails 6 support
 - Add optional `reply_to_id` and `reference` parameters
 
@@ -28,6 +30,7 @@ The format is based on [Keep a Changelog]
 
 [unreleased]:
   https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/0.1.0...HEAD
+[0.2.0]: https://github.com/dxw/mail-notify/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/dxw/mail-notify/compare/0.0.3...0.1.0
 [0.0.3]: https://github.com/dxw/mail-notify/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/dxw/mail-notify/compare/0.0.1...0.0.2
