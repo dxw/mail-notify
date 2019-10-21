@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Add Rails 6 support for previews
+
 ## [0.2.0] - 2019-08-30
 
 - Add Rails 6 support
