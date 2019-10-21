@@ -25,7 +25,7 @@ module Mail
 
       def render_preview_wrapper
         @part = @email
-        render action: 'email', layout: false, formats: %w[html]
+        render action: 'email', layout: false, formats: %i[html]
       end
 
       def notify?
