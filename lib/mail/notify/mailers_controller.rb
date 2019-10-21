@@ -19,8 +19,12 @@ module Mail
       private
 
       def render_part
+        # Add the current directory to the view path so that Rails can find
+        # the `govuk_notify_layout` layout
+        append_view_path(__dir__)
+
         response.content_type = 'text/html'
-        render plain: @email.preview.html.html_safe
+        render html: @email.preview.html.html_safe, layout: 'govuk_notify_layout'
       end
 
       def render_preview_wrapper
