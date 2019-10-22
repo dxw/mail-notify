@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [0.2.1] - 2019-10-22
+
 - Add Rails 6 support for previews
 - Add GOV.UK Notify styling to preview emails
 
@@ -33,6 +35,7 @@ The format is based on [Keep a Changelog]
 
 [unreleased]:
   https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/0.1.0...HEAD
+[0.2.1]: https://github.com/dxw/mail-notify/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/dxw/mail-notify/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/dxw/mail-notify/compare/0.0.3...0.1.0
 [0.0.3]: https://github.com/dxw/mail-notify/compare/0.0.2...0.0.3
