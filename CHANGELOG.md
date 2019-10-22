@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog]
 ## [Unreleased]
 
 - Add Rails 6 support for previews
+- Add GOV.UK Notify styling to preview emails
 
 ## [0.2.0] - 2019-08-30
 

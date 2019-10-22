@@ -24,7 +24,7 @@ RSpec.describe Rails::MailersController, type: :controller do
     it 'gets the HTML preview' do
       get :preview, params: { path: 'welcome/my_mail', part: 'text/html' }
 
-      expect(response.body).to eq('<p>Some HTML</p>')
+      expect(response.body).to include('<p>Some HTML</p>')
     end
 
     it 'returns a HTML content type' do
