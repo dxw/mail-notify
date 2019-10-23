@@ -4,10 +4,14 @@ module Mail
   module Notify
     class Mailer < ActionMailer::Base
       def view_mail(template_id, headers)
+        raise ArgumentError, 'You must specify a template ID' if template_id.blank?
+
         mail(headers.merge(template_id: template_id))
       end
 
       def template_mail(template_id, headers)
+        raise ArgumentError, 'You must specify a template ID' if template_id.blank?
+
         mail(headers.merge(body: '', subject: '', template_id: template_id))
       end
     end

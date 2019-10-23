@@ -10,6 +10,13 @@ RSpec.describe Mail::Notify::Mailer do
       expect(mailer).to receive(:mail).with(template_id: 'foo', bar: 'baz')
       mailer.view_mail('foo', bar: 'baz')
     end
+
+    it 'raises an error if the template ID is blank' do
+      expect { mailer.view_mail('', bar: 'baz') }.to raise_error(
+        ArgumentError,
+        'You must specify a template ID'
+      )
+    end
   end
 
   context 'with a template' do
@@ -21,6 +28,13 @@ RSpec.describe Mail::Notify::Mailer do
         subject: ''
       )
       mailer.template_mail('foo', bar: 'baz')
+    end
+
+    it 'raises an error if the template ID is blank' do
+      expect { mailer.template_mail('', bar: 'baz') }.to raise_error(
+        ArgumentError,
+        'You must specify a template ID'
+      )
     end
   end
 end

@@ -7,16 +7,27 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     ActionMailer::Base.add_delivery_method(:notify, Mail::Notify::DeliveryMethod)
     ActionMailer::Base.delivery_method = :notify
     ActionMailer::Base.notify_settings = {
-      api_key: 'some-api-key'
+      api_key: api_key
     }
   end
 
+  let(:api_key) { 'some-api-key' }
   let(:notify) { double(:notify) }
   let(:preview) { double(Notifications::Client::TemplatePreview) }
+  let(:mailer) { TestMailer.my_mail }
+
+  context 'when API key is blank' do
+    let(:api_key) { '' }
+
+    it 'raises an error' do
+      expect { mailer.deliver! }.to raise_error(
+        ArgumentError,
+        'You must specify an API key'
+      )
+    end
+  end
 
   context 'with a view' do
-    let(:mailer) { TestMailer.my_mail }
-
     it 'has access to the settings' do
       expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
     end

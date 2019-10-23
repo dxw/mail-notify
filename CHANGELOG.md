@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Add error handling for blank variables
+
 ## [0.2.1] - 2019-10-22
 
 - Add Rails 6 support for previews
