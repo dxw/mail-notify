@@ -33,5 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'sqlite3', '~> 1.4.1'
 
   spec.add_dependency 'actionmailer', '>= 5.0', '< 6.1'
-  spec.add_dependency 'notifications-ruby-client', '~> 3.1'
+  spec.add_dependency 'notifications-ruby-client', '~> 4.0.0'
 end
