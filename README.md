@@ -73,7 +73,7 @@ class MyMailer < Mail::Notify::Mailer
     def send_email
         template_mail('YOUR_TEMPLATE_ID_GOES_HERE',
           to: 'mail@somewhere.com',
-          personalisations: {
+          personalisation: {
               foo: 'bar'
           }
         )
