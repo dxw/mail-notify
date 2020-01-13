@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Bump Notify gem to 5.1
 - Add error handling for blank variables
 
 ## [0.2.1] - 2019-10-22
@@ -33,7 +34,7 @@ The format is based on [Keep a Changelog]
 
 ## [0.0.1] - 2019-02-01
 
-- Inital release
+- Initial release
 
 [unreleased]:
   https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/0.1.0...HEAD
