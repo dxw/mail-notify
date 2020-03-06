@@ -11,10 +11,28 @@ RSpec.describe Mail::Notify::DeliveryMethod do
     }
   end
 
-  let(:api_key) { 'some-api-key' }
+  let(:api_key) do
+    'staging-e1f4c969-b675-4a0d-a14d-623e7c2d3fd8-24fea27b-824e-4259-b5ce-1badafe98150'
+  end
   let(:notify) { double(:notify) }
   let(:preview) { double(Notifications::Client::TemplatePreview) }
   let(:mailer) { TestMailer.my_mail }
+  let(:personalisation) { {} }
+  let(:request_body) do
+    {
+      email_address: 'myemail@gmail.com',
+      template_id: 'template-id',
+      personalisation: personalisation
+    }
+  end
+
+  let!(:stub) do
+    stub_request(:post, 'https://api.notifications.service.gov.uk/v2/notifications/email')
+      .with(body: request_body)
+      .to_return(body: {
+        id: 'aceed36e-6aee-494c-a09f-88b68904bad6'
+      }.to_json)
+  end
 
   context 'when API key is blank' do
     let(:api_key) { '' }
@@ -28,100 +46,90 @@ RSpec.describe Mail::Notify::DeliveryMethod do
   end
 
   context 'with a view' do
+    let(:personalisation) do
+      {
+        body: "# bar\r\n\r\nBar baz",
+        subject: 'Hello there!'
+      }
+    end
+
     it 'has access to the settings' do
-      expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
+      expect(mailer.delivery_method.settings[:api_key]).to eq(api_key)
     end
 
     it 'calls Notify\'s send_email service with the correct details ' do
-      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      expect(notify).to receive(:send_email).with(
-        email_address: 'myemail@gmail.com',
-        template_id: 'template-id',
-        personalisation: {
-          body: "# bar\r\n\r\nBar baz",
-          subject: 'Hello there!'
-        }
-      )
       mailer.deliver!
+
+      expect(stub).to have_been_requested
     end
 
     it 'gives access to the response' do
-      response = double(:response)
-      allow(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      allow(notify).to receive(:send_email) { response }
       mailer.deliver!
 
-      expect(mailer.delivery_method.response).to eq(response)
+      expect(mailer.delivery_method.response.id).to eq(
+        'aceed36e-6aee-494c-a09f-88b68904bad6'
+      )
     end
 
     it 'shows a preview' do
-      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      expect(notify).to receive(:generate_template_preview)
-        .with('template-id',
-              personalisation: {
-                body: "# bar\r\n\r\nBar baz",
-                subject: 'Hello there!'
-              }) { preview }
+      preview_stub = stub_request(:post, 'https://api.notifications.service.gov.uk/v2/template/template-id/preview')
+                     .to_return(status: 200, body: {}.to_json)
 
       mailer.preview
+
+      expect(preview_stub).to have_been_requested
     end
   end
 
   context 'with a template' do
+    let(:personalisation) do
+      {
+        foo: 'bar'
+      }
+    end
     let(:mailer) { TestMailer.my_other_mail }
 
     it 'has access to the settings' do
-      expect(mailer.delivery_method.settings[:api_key]).to eq('some-api-key')
+      expect(mailer.delivery_method.settings[:api_key]).to eq(api_key)
     end
 
     it 'calls Notify\'s send_email service with the correct details ' do
-      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      expect(notify).to receive(:send_email).with(
-        email_address: 'myemail@gmail.com',
-        template_id: 'template-id',
-        personalisation: {
-          foo: 'bar'
-        }
-      )
       mailer.deliver!
+
+      expect(stub).to have_been_requested
     end
 
     it 'gives access to the response' do
-      response = double(:response)
-      allow(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      allow(notify).to receive(:send_email) { response }
       mailer.deliver!
 
-      expect(mailer.delivery_method.response).to eq(response)
+      expect(mailer.delivery_method.response.id).to eq(
+        'aceed36e-6aee-494c-a09f-88b68904bad6'
+      )
     end
 
     it 'shows a preview' do
-      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      expect(notify).to receive(:generate_template_preview).with('template-id',
-                                                                 personalisation: {
-                                                                   foo: 'bar'
-                                                                 }) { preview }
+      preview_stub = stub_request(:post, 'https://api.notifications.service.gov.uk/v2/template/template-id/preview')
+                     .to_return(status: 200, body: {}.to_json)
 
       mailer.preview
+
+      expect(preview_stub).to have_been_requested
     end
   end
 
   context 'with optional fields included' do
     let(:mailer) { TestMailer.my_mail_optional_fields }
+    let(:request_body) do
+      hash_including(
+        email_reply_to_id: 'custom-reply-to-id',
+        reference: 'ABC123XYZ'
+      )
+    end
 
     it 'calls Notify’s send_email service with the optional fields' do
-      expect(Notifications::Client).to receive(:new).with('some-api-key') { notify }
-      expect(notify).to receive(:send_email).with(
-        email_address: 'email@gmail.com',
-        template_id: 'template-id',
-        email_reply_to_id: 'custom-reply-to-id',
-        reference: 'ABC123XYZ',
-        personalisation: {
-          body: "Foo\r\n",
-          subject: 'Hello there!'
-        }
-      )
       mailer.deliver!
+
+      expect(stub).to have_been_requested
     end
   end
 end

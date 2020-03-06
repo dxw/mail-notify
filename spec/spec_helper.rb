@@ -6,6 +6,7 @@ Coveralls.wear!
 require 'bundler/setup'
 require 'action_mailer'
 require 'pry'
+require 'webmock/rspec'
 
 require 'mail/notify'
 require 'support/test_mailer'
