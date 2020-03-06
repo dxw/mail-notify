@@ -23,13 +23,13 @@ module Mail
         # the `govuk_notify_layout` layout
         append_view_path(__dir__)
 
-        response.content_type = 'text/html'
-        render html: @email.preview.html.html_safe, layout: 'govuk_notify_layout'
+        response.content_type = "text/html"
+        render html: @email.preview.html.html_safe, layout: "govuk_notify_layout"
       end
 
       def render_preview_wrapper
         @part = @email
-        render action: 'email', layout: false, formats: %i[html]
+        render action: "email", layout: false, formats: %i[html]
       end
 
       def notify?

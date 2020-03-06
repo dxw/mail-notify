@@ -6,7 +6,7 @@ module Mail
       attr_accessor :settings, :response
 
       def initialize(settings)
-        raise ArgumentError, 'You must specify an API key' if settings[:api_key].blank?
+        raise ArgumentError, "You must specify an API key" if settings[:api_key].blank?
 
         @settings = settings
       end
