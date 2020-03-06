@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-rails', '~> 3.8'
   spec.add_development_dependency 'rubocop', '~> 0.63'
   spec.add_development_dependency 'sqlite3', '~> 1.4.1'
+  spec.add_development_dependency 'webmock', '~> 3.7.6'
 
   spec.add_dependency 'actionmailer', '>= 5.0', '< 6.1'
   spec.add_dependency 'notifications-ruby-client', '~> 5.1'
