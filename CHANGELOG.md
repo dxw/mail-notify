@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [1.0.1] - 2020-03-06
+
+- Support additional Notify services
+
 ## [1.0] - 2019-10-22
 
 - Bump Notify gem to 5.1
@@ -40,6 +44,7 @@ The format is based on [Keep a Changelog]
 
 [unreleased]:
   https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/1.0...HEAD
+[1.0.1]: https://github.com/dxw/mail-notify/compare/1.0...1.0.1
 [1.0]: https://github.com/dxw/mail-notify/compare/0.2.1...1.0
 [0.2.1]: https://github.com/dxw/mail-notify/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/dxw/mail-notify/compare/0.1.0...0.2.0
