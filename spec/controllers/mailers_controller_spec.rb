@@ -9,7 +9,7 @@ RSpec.describe Rails::MailersController, type: :controller do
   let(:preview) { double(Notifications::Client::TemplatePreview) }
 
   before do
-    allow(Notifications::Client).to receive(:new).with('some-api-key') { notify }
+    allow(Notifications::Client).to receive(:new).with('some-api-key', nil) { notify }
     allow(notify).to receive(:generate_template_preview).with(
       'template-id',
       personalisation: {
