@@ -32,6 +32,16 @@ config.action_mailer.notify_settings = {
 }
 ```
 
+If you're using a different Notify service to GOV.UK Notify (for example [GOV.CA Notify](https://notification.alpha.canada.ca/)), you can also specify the Base URL in your setup:
+
+```ruby
+config.action_mailer.delivery_method = :notify
+config.action_mailer.notify_settings = {
+  api_key: YOUR_NOTIFY_API_KEY,
+  base_url: 'https://api.notification.alpha.canada.ca'
+}
+```
+
 ### Mailers
 
 There are two options for using `Mail::Notify`, either templating in Rails with a view, or templating in Notify. Whichever way you choose, you'll need your mailers to inherit from `Mail::Notify::Mailer` like so:

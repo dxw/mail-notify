@@ -132,4 +132,34 @@ RSpec.describe Mail::Notify::DeliveryMethod do
       expect(stub).to have_been_requested
     end
   end
+
+  context 'when a base url is specified' do
+    before do
+      ActionMailer::Base.notify_settings = {
+        api_key: api_key,
+        base_url: 'http://example.com'
+      }
+    end
+
+    let(:personalisation) do
+      {
+        body: "# bar\r\n\r\nBar baz",
+        subject: 'Hello there!'
+      }
+    end
+
+    let!(:stub) do
+      stub_request(:post, 'http://example.com/v2/notifications/email')
+        .with(body: request_body)
+        .to_return(body: {
+          id: 'aceed36e-6aee-494c-a09f-88b68904bad6'
+        }.to_json)
+    end
+
+    it 'calls appends the new base url to the request' do
+      mailer.deliver!
+
+      expect(stub).to have_been_requested
+    end
+  end
 end

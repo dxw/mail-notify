@@ -26,7 +26,7 @@ module Mail
       private
 
       def client
-        @client ||= Notifications::Client.new(@settings[:api_key])
+        @client ||= Notifications::Client.new(@settings[:api_key], @settings[:base_url])
       end
 
       def email_params
