@@ -38,8 +38,9 @@ RSpec.describe Rails::MailersController, type: :controller do
     it "returns an iframe" do
       get :preview, params: {path: "welcome/my_mail"}
 
-      regex = %r{<iframe seamless name="messageBody" src="\?part=text%2Fhtml"><\/iframe>}
-      expect(response.body).to match(regex)
+      expect(response.body).to include(
+        "<iframe seamless name=\"messageBody\" src=\"?part=text%2Fhtml\"></iframe>"
+      )
     end
   end
 end
