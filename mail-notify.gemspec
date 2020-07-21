@@ -36,5 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionmailer", ">= 5.2.4.2", "< 6.1"
   spec.add_dependency "activesupport", ">= 5.2.4.3"
   spec.add_dependency "actionpack", ">= 5.2.4.3"
+  spec.add_dependency "actionview", ">= 5.2.4.3"
   spec.add_dependency "notifications-ruby-client", "~> 5.1"
+  spec.add_dependency "rack", ">= 2.1.4"
 end
