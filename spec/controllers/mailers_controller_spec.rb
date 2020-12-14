@@ -30,7 +30,7 @@ RSpec.describe Rails::MailersController, type: :controller do
     it "returns a HTML content type" do
       get :preview, params: {path: "welcome/my_mail", part: "text/html"}
 
-      expect(response.content_type).to eq("text/html")
+      expect(response.media_type).to eq("text/html")
     end
   end
 
