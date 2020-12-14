@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
-## [1.0.2] - 2020-12-14
+## [1.0.3] - 2020-12-14
 
 - Add support for ActionMailer 6.1
+
+## [1.0.2] - 2020-03-24
+
+- Add support for ActionMailer 6.0
 
 ## [1.0.1] - 2020-03-06
 
@@ -46,7 +50,8 @@ The format is based on [Keep a Changelog]
 
 - Initial release
 
-[unreleased]: https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/1.0.2...HEAD
+[unreleased]: https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/dxw/mail-notify/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/dxw/mail-notify/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/dxw/mail-notify/compare/1.0...1.0.1
 [1.0]: https://github.com/dxw/mail-notify/compare/0.2.1...1.0
