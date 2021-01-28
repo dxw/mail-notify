@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [1.0.4] - 2021-01-28
+
+- Remove pessimistic constraint on Rails version
+
 ## [1.0.3] - 2020-12-14
 
 - Add support for ActionMailer 6.1
