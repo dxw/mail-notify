@@ -113,6 +113,27 @@ class MyMailer < Mail::Notify::Mailer
 end
 ```
 
+#### With Devise
+
+If you're using [Devise](https://github.com/heartcombo/devise), you can overwrite your Devise mailer to use mail-notify for password reset emails etc.
+
+In `config/initializers/devise.rb`:
+
+```ruby
+config.mailer = 'DeviseMailer'
+```
+
+in `app/mailers/devise_mailer.rb`:
+
+```ruby
+class DeviseMailer < Devise::Mailer
+  def devise_mail(record, action, opts = {}, &block)
+    initialize_from_record(record)
+    view_mail(ENV['NOTIFY_TEMPLATE_ID'], headers_for(action, opts))
+  end
+end
+```
+
 ## Previews
 
 If you're using ActionMailer with Rails, [previews](https://guides.rubyonrails.org/action_mailer_basics.html#previewing-emails) are supported too, and work in the same way as standard previews. Currently they're shown without any branding, but this may change in future.
