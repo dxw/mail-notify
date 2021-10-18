@@ -37,4 +37,18 @@ RSpec.describe Mail::Notify::Mailer do
       )
     end
   end
+
+  describe "#blank_allowed" do
+    context "when given a non-blank value" do
+      it "returns the given value" do
+        expect(mailer.blank_allowed("foo")).to eq "foo"
+      end
+    end
+
+    context "when given a blank value" do
+      it "returns explicitly blank personalisation" do
+        expect(mailer.blank_allowed("")).to be Mail::Notify::Personalisation::BLANK
+      end
+    end
+  end
 end

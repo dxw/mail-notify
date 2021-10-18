@@ -14,6 +14,10 @@ module Mail
 
         mail(headers.merge(body: "", subject: "", template_id: template_id))
       end
+
+      def blank_allowed(value)
+        value.presence || Personalisation::BLANK
+      end
     end
   end
 end
