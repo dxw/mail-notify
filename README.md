@@ -91,6 +91,23 @@ class MyMailer < Mail::Notify::Mailer
 end
 ```
 
+By default, any blank personalisation are removed from the request, which will trigger mail template validation. This is to avoid accidental blanks in the email. If you want to send a blank value, you need to explicitly state that the personalization can be blank:  
+
+```ruby
+class MyMailer < Mail::Notify::Mailer
+  def send_email
+    template_mail('YOUR_TEMPLATE_ID_GOES_HERE',
+                  to: 'mail@somewhere.com',
+                  personalisation: {
+                    foo: foo.name, # This will trigger template validation error when blank
+                    bar: blank_allowed(bar.name) # This will inject empty string in the template when blank
+                  }
+    )
+  end
+end
+```
+
+
 #### With optional Notify arguments
 
 It's possible to pass two optional arguments to Notify:
