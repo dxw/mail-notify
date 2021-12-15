@@ -45,4 +45,20 @@ RSpec.describe Mail::Notify::Personalisation do
       )
     end
   end
+
+  context "with explicitly blank personalisation" do
+    let(:mail) { Mail.new(personalisation: {foo: Mail::Notify::Personalisation::BLANK}) }
+
+    it "replaces it with a blank string" do
+      expect(personalisation.to_h).to eq("foo" => "")
+    end
+  end
+
+  context "with implicitly blank personalisation" do
+    let(:mail) { Mail.new(personalisation: {foo: [nil, "", false].sample}) }
+
+    it "removes it from the hash" do
+      expect(personalisation.to_h).to be_empty
+    end
+  end
 end
