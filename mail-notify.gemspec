@@ -38,5 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionpack", ">= 5.2.7.1"
   spec.add_dependency "actionview", ">= 5.2.7.1"
   spec.add_dependency "notifications-ruby-client", "~> 5.1"
-  spec.add_dependency "rack", ">= 2.1.4"
+  spec.add_dependency "rack", ">= 2.1.4.1"
 end
