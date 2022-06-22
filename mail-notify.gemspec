@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "coveralls", "~> 0.8.22"
   spec.add_development_dependency "pry", "~> 0.12.0"
-  spec.add_development_dependency "rails", "~> 6.0"
+  spec.add_development_dependency "rails", "~> 7.0"
   spec.add_development_dependency "rake", "~> 12.3.3"
   spec.add_development_dependency "rspec-rails", "~> 3.8"
   spec.add_development_dependency "standard", "0.4.7"
