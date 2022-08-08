@@ -33,7 +33,7 @@ module Mail
       end
 
       def notify?
-        @email.delivery_method.class == Mail::Notify::DeliveryMethod
+        @email.delivery_method.instance_of?(Mail::Notify::DeliveryMethod)
       end
     end
   end
