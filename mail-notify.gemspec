@@ -29,9 +29,13 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rails", "~> 7"
   spec.add_development_dependency "rake", "~> 13.0.6"
   spec.add_development_dependency "rspec-rails", "~> 5.1"
-  spec.add_development_dependency "standard", "1.16.1"
-  spec.add_development_dependency "sqlite3", "~> 1.5.3"
-  spec.add_development_dependency "webmock", "~> 3.18.1"
+  spec.add_development_dependency "standard", "0.4.7"
+  spec.add_development_dependency "sqlite3", "~> 1.4.1"
+  spec.add_development_dependency "webmock", "~> 3.16.0"
+  # Note: we pin rspec-mocks only because 3.10.3 is broken; see
+  # https://github.com/rspec/rspec-mocks/issues/1460
+  # and the commit message for this commit
+  spec.add_development_dependency "rspec-mocks", "3.10.2"
 
   spec.add_dependency "actionmailer", ">= 5.2.4.6"
   spec.add_dependency "activesupport", ">= 5.2.4.6"
@@ -39,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionview", ">= 5.2.7.1"
   spec.add_dependency "notifications-ruby-client", "~> 5.1"
   spec.add_dependency "rack", ">= 2.1.4.1"
+
 end
