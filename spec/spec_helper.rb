@@ -8,7 +8,7 @@ require "action_mailer"
 require "pry"
 require "webmock/rspec"
 
-require "mail/notify"
+require "notify"
 require "support/test_mailer"
 
 ActionMailer::Base.view_paths = File.join(File.dirname(__FILE__), "support", "templates")
