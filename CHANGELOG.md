@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [1.0.5] - 2022-08-31
+
+- Allow explicitly blank personalisations (https://github.com/dxw/mail-notify/pull/30)
+- Fix Zeitwerk compatibility issue (https://github.com/dxw/mail-notify/pull/58)
+- Dependency updates
+
 ## [1.0.4] - 2021-01-28
 
 - Remove pessimistic constraint on Rails version
@@ -55,6 +61,8 @@ The format is based on [Keep a Changelog]
 - Initial release
 
 [unreleased]: https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/1.0.3...HEAD
+[1.0.5]: https://github.com/dxw/mail-notify/compare/1.0.4...1.0.5
+[1.0.4]: https://github.com/dxw/mail-notify/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/dxw/mail-notify/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/dxw/mail-notify/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/dxw/mail-notify/compare/1.0...1.0.1
