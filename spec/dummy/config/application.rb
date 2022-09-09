@@ -6,7 +6,7 @@ require "rails/all"
 
 Bundler.require(*Rails.groups)
 require "mail/notify/railtie"
-require "notify"
+require "mail/notify"
 
 module Dummy
   class Application < Rails::Application

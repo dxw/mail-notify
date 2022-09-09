@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-09-09
+
+- Revert previous Zeitwerk fix
+- Specifically require `rails/mailers_controller` in the Railtie
+
 ## [1.0.5] - 2022-08-31
 
 - Allow explicitly blank personalisations (https://github.com/dxw/mail-notify/pull/30)
