@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails/mailers_controller"
+
 module Mail
   module Notify
     class Railtie < Rails::Railtie
