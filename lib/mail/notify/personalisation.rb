@@ -14,7 +14,7 @@ module Mail
       def to_h
         merged_options
           .reject { |_k, v| v.blank? }
-          .transform_values { |value| value == BLANK ? "" : value }
+          .transform_values { |value| (value == BLANK) ? "" : value }
       end
 
       private
