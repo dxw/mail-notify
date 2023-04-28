@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [1.2.0] - 2023-04-28
+
+- Requiring Ruby 2.7.8
+- Specs now support Ruby 3.x
+- Development now uses Rails 7.x
+
 ## [1.1.0] - 2022-09-09
 
 - Revert previous Zeitwerk fix
