@@ -34,10 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard", "~> 1"
   spec.add_development_dependency "sqlite3", "~> 1.6.2"
   spec.add_development_dependency "webmock", "~> 3.16.0"
-  # Note: we pin rspec-mocks only because 3.10.3 is broken; see
-  # https://github.com/rspec/rspec-mocks/issues/1460
-  # and the commit message for this commit
-  spec.add_development_dependency "rspec-mocks", "3.10.2"
+  spec.add_development_dependency "rspec-mocks", "~> 3.11.0"
 
   spec.add_dependency "actionmailer", ">= 5.2.4.6"
   spec.add_dependency "activesupport", ">= 5.2.4.6"
