@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0.6"
   spec.add_development_dependency "rspec-rails", "~> 5.1"
   spec.add_development_dependency "standard", "~> 1"
-  spec.add_development_dependency "sqlite3", "~> 1.4.1"
+  spec.add_development_dependency "sqlite3", "~> 1.6.2"
   spec.add_development_dependency "webmock", "~> 3.16.0"
   # Note: we pin rspec-mocks only because 3.10.3 is broken; see
   # https://github.com/rspec/rspec-mocks/issues/1460
