@@ -11,5 +11,9 @@
 .rspec_status
 .DS_Store
 /Gemfile.lock
-/spec/dummy/log/test.log
 /vendor
+
+# The 'dummy' app used in the test suite
+spec/dummy/log/*
+spec/dummy/tmp/*
+spec/dummy/db/*.sqlite3
