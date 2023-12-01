@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/dxw/mail-notify/workflows/Build/badge.svg)](https://github.com/dxw/mail-notify/actions)
-[![Coverage Status](https://img.shields.io/coveralls/github/pezholio/mail-notify.svg?style=flat-square)](https://coveralls.io/github/pezholio/mail-notify)
+[![Coverage Status](https://coveralls.io/repos/github/dxw/mail-notify/badge.svg?branch=fix-coveralls)](https://coveralls.io/github/dxw/mail-notify?branch=fix-coveralls)
 [![Gem Version](http://img.shields.io/gem/v/mail-notify.svg?style=flat-square)](https://rubygems.org/gems/mail-notify)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
 
