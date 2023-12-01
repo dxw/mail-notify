@@ -3,6 +3,8 @@
 module Mail
   module Notify
     class Mailer < ActionMailer::Base
+      layout "govuk_notify_layout"
+
       def view_mail(template_id, headers)
         raise ArgumentError, "You must specify a template ID" if template_id.blank?
 
