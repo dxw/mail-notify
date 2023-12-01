@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls", "~> 0.8.22"
   spec.add_development_dependency "pry", "~> 0.14.1"
   spec.add_development_dependency "rails", "7.0.8"
-  spec.add_development_dependency "rake", "~> 13.0.6"
+  spec.add_development_dependency "rake", "~> 13.1.0"
   spec.add_development_dependency "rspec-rails", "~> 5.1"
   spec.add_development_dependency "standard", "~> 1"
   spec.add_development_dependency "sqlite3", "~> 1.6.2"
