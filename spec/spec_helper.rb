@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require "coveralls"
-Coveralls.wear!
+require "simplecov"
+require "simplecov-lcov"
+SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+SimpleCov.start
 
 require "bundler/setup"
 require "action_mailer"
