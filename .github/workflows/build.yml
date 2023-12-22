@@ -22,7 +22,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install sqlite3 libsqlite3-dev
-        gem install bundler
+        gem install bundler --version "2.3.27"
         bundle install --jobs 4 --retry 3 --path ./vendor/bundle
         bundle exec rake
     - name: Coveralls
