@@ -18,9 +18,11 @@ module Mail
       end
 
       def preview(mail)
+        debugger
         personalisation = Personalisation.new(mail).to_h
         template_id = mail[:template_id].to_s
-        client.generate_template_preview(template_id, personalisation: personalisation)
+        #client.generate_template_preview(template_id, personalisation: personalisation)
+        OpenStruct.new(html: "<h1>Hej!</h1>")
       end
 
       private

@@ -4,16 +4,26 @@ module Mail
   module Notify
     module MailersController
       def preview
-        @email_action = File.basename(params[:path])
-        return super unless @preview.email_exists?(@email_action)
 
+        # this methods overides the built in one
+        # https://www.rubydoc.info/docs/rails/Rails/MailersController#preview-instance_method
+        #
+        # what kind of mailer is trying to be previewed
+        # if it is a Notify one, we need to do something different
+        @email_action = File.basename(params[:path])
         @email = @preview.call(@email_action, params)
 
-        return super unless notify?
-
-        return render_part if params[:part]
-
-        render_preview_wrapper
+        if @email.delivery_method.is_a?(Mail::Notify::DeliveryMethod)
+          # because we have two types, a view or template, we have to do different
+          # things
+          debugger
+          response.content_type = "text/html"
+          debugger
+          @part = @email.find_first_mime_type(:html)
+        render action: "email", layout: false, formats: %i[html]
+        else
+          super
+        end
       end
 
       private
@@ -23,8 +33,6 @@ module Mail
         # the `govuk_notify_layout` layout
         append_view_path(__dir__)
 
-        response.content_type = "text/html"
-        render html: @email.preview.html.html_safe, layout: "govuk_notify_layout"
       end
 
       def render_preview_wrapper
