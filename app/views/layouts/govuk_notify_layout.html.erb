@@ -1,14 +1,14 @@
-<%# Copied from GOV.UK Notify: https://raw.githubusercontent.com/alphagov/notifications-utils/d69de041d1be7b826e7d9cc56450e157ad361799/notifications_utils/jinja_templates/email_template.jinja2 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- Template sourced from https://github.com/alphagov/notifications-utils/blob/main/notifications_utils/jinja_templates/email_template.jinja2 -->
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta content="telephone=no" name="format-detection" /> <!-- need to add formatting for real phone numbers -->
-  <meta name="viewport" content="width=device-width" />
-  <title>Page title</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta content="telephone=no" name="format-detection"> <!-- need to add formatting for real phone numbers -->
+  <meta name="viewport" content="width=device-width">
+  <title>{{ subject }}</title>
 
-  <style type="text/css">
+  <style>
     @media only screen and (min-device-width: 581px) {
       .content {
         width: 580px !important;
@@ -19,7 +19,7 @@
   </style>
 
   <!--[if gte mso 9]>
-    <style type="text/css">
+    <style>
       li {
         margin-left: 4px !important;
       }
@@ -33,8 +33,7 @@
 </head>
 
 <body style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;margin: 0;color:#0b0c0c;">
-
-<span style="display: none;font-size: 1px;color: #fff; max-height: 0;"></span>
+<span style="display: none;font-size: 1px;color: #fff; max-height: 0;" hidden>{{ preheader }}…</span>
   <table role="presentation" width="100%" style="border-collapse: collapse;min-width: 100%;width: 100% !important;" cellpadding="0" cellspacing="0" border="0">
     <tr>
       <td width="100%" height="53" bgcolor="#0b0c0c">
@@ -51,20 +50,20 @@
                   <tr>
                     <td style="padding-left: 10px">
                       <img
-                        src="https://static.notifications.service.gov.uk/images/gov.uk_logotype_crown.png"
-                        alt=" "
+                        src="https://static.notifications.service.gov.uk/images/govuk-logotype-tudor-crown.png"
+                        alt=""
                         height="32"
                         border="0"
-                        style="Margin-top: 4px;"
-                      />
+                        style="Margin-top: 2px;"
+                      >
                     </td>
-                    <td style="font-size: 28px; line-height: 1.315789474; Margin-top: 4px; padding-left: 10px;">
+                    <td style="font-size: 28px; line-height: 1.315789474; Margin-top: 4px; padding-left: 8px;">
                       <span style="
                         font-family: Helvetica, Arial, sans-serif;
                         font-weight: 700;
                         color: #ffffff;
                         text-decoration: none;
-                        vertical-align:top;
+                        vertical-align:middle;
                         display: inline-block;
                           ">GOV.UK</span>
                     </td>
@@ -102,7 +101,7 @@
         <![endif]-->
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                   <tr>
-                    <td bgcolor="#005EA5" width="100%" height="10"></td>
+                    <td bgcolor="#1D70B8" width="100%" height="10"></td>
                   </tr>
                 </table>
         <!--[if (gte mso 9)|(IE)]>
@@ -114,7 +113,6 @@
       <td width="10" valign="middle" height="10"></td>
     </tr>
   </table>
-
   <table
       role="presentation"
       class="content"
@@ -126,27 +124,27 @@
       width="100%"
   >
     <tr>
-      <td height="30"><br /></td>
+      <td height="30"><br></td>
     </tr>
     <tr>
-      <td width="10" valign="middle"><br /></td>
+      <td width="10" valign="middle"><br></td>
       <td style="font-family: Helvetica, Arial, sans-serif; font-size: 19px; line-height: 1.315789474; max-width: 560px;">
         <!--[if (gte mso 9)|(IE)]>
           <table role="presentation" width="560" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;width: 560px;">
             <tr>
               <td style="font-family: Helvetica, Arial, sans-serif; font-size: 19px; line-height: 1.315789474;">
-        <![endif]-->
-            <%= yield %>
+                <![endif]-->
+        <%= yield %>
         <!--[if (gte mso 9)|(IE)]>
               </td>
             </tr>
           </table>
         <![endif]-->
       </td>
-      <td width="10" valign="middle"><br /></td>
+      <td width="10" valign="middle"><br></td>
     </tr>
     <tr>
-      <td height="30"><br /></td>
+      <td height="30"><br></td>
     </tr>
   </table>
 </body>
