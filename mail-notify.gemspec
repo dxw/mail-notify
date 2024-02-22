@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov", "~> 0.21"
   spec.add_development_dependency "simplecov-lcov"
   spec.add_development_dependency "pry", "~> 0.14.1"
-  spec.add_development_dependency "rails", "7.0.8"
+  spec.add_development_dependency "rails", "7.1.3.2"
   spec.add_development_dependency "rake", "~> 13.0.6"
   spec.add_development_dependency "rspec-rails", "~> 5.1"
   spec.add_development_dependency "standard", "~> 1"
