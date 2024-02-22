@@ -3,9 +3,7 @@
 module Mail
   module Notify
     module Message
-      def preview
-        delivery_method.preview(self) if delivery_method.respond_to?(:preview)
-      end
+      attr_accessor :template_id, :personalisation, :reply_to_id, :reference
     end
   end
 end
