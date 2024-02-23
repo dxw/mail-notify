@@ -14,7 +14,6 @@ require "bundler/setup"
 require "action_controller"
 require "action_mailer"
 require "pry"
-require "webmock/rspec"
 
 require "mail/notify"
 

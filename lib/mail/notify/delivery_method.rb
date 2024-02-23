@@ -6,20 +6,28 @@ module Mail
       attr_accessor :settings, :response
 
       def initialize(settings)
-        raise ArgumentError, "You must specify an API key" if settings[:api_key].blank?
+        raise ArgumentError, "You must specify a Notify API key" if settings[:api_key].blank?
 
         @settings = settings
       end
 
-      def deliver!(mail)
-        @mail = mail
-        @personalisation = Personalisation.new(mail)
-        send_email
+      def deliver!(message)
+        params = {
+          template_id: message.template_id,
+          email_address: message.to.first,
+          personalisation: message.personalisation,
+          email_reply_to_id: message.reply_to_id,
+          reference: message.reference
+        }
+
+        client.send_email(params.compact)
       end
 
-      def preview(mail)
-        personalisation = Personalisation.new(mail).to_h
-        template_id = mail[:template_id].to_s
+      def preview(message)
+        template_id = message.template_id
+        personalisation = message.personalisation
+
+        Rails.logger.info("Getting Notify preview for template id #{template_id}")
         client.generate_template_preview(template_id, personalisation: personalisation)
       end
 
@@ -27,24 +35,6 @@ module Mail
 
       def client
         @client ||= Notifications::Client.new(@settings[:api_key], @settings[:base_url])
-      end
-
-      def email_params
-        {
-          email_address: @mail.to.first,
-          template_id: @mail[:template_id].to_s,
-          personalisation: @personalisation.to_h,
-          email_reply_to_id: optional_param(:reply_to_id),
-          reference: optional_param(:reference)
-        }
-      end
-
-      def optional_param(name)
-        @mail[name].presence&.to_s
-      end
-
-      def send_email
-        @response = client.send_email(email_params.compact)
       end
     end
   end
