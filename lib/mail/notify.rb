@@ -5,7 +5,6 @@ require "notifications/client"
 require "mail/notify/version"
 require "mail/notify/engine" if defined? Rails
 require "mail/notify/delivery_method"
-require "mail/notify/personalisation"
 require "mail/notify/mailer"
 require "mail/notify/message"
 require "mail/notify/mail_notify_previews_controller"
