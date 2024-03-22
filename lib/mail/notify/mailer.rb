@@ -91,7 +91,7 @@ module Mail
       # allows blank personalisation options
 
       def blank_allowed(value)
-        value.presence || Personalisation::BLANK
+        value.to_s
       end
     end
   end

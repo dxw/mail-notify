@@ -211,9 +211,15 @@ RSpec.describe Mail::Notify::Mailer do
       end
     end
 
-    context "when given a blank value" do
+    context "when given an empty string" do
       it "returns explicitly blank personalisation" do
-        expect(TestMailer.new.blank_allowed("")).to be Mail::Notify::Personalisation::BLANK
+        expect(TestMailer.new.blank_allowed("")).to eq ""
+      end
+    end
+
+    context "when given nil" do
+      it "returns an empty string" do
+        expect(TestMailer.new.blank_allowed(nil)).to eq ""
       end
     end
   end
