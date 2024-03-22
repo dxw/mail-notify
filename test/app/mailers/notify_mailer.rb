@@ -14,7 +14,7 @@ class NotifyMailer < Mail::Notify::Mailer
 
   def template_with_personalisation
     name = params[:name]
-    to = params[:email_address]
+    to = params[:to]
 
     template_mail("5c9f8048-4283-40f8-9694-7dbb86b1f636", to: to, personalisation: {name: name})
   end
