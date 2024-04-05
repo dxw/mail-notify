@@ -61,4 +61,6 @@ jobs:
           cache-to: type=gha,mode=min
       -
         name: Run integration tests
-        run: docker run --rm -e "NOTIFY_API_KEY=${{ secrets.NOTIFY_API_KEY }}" mail-notify-integration-rails-7:latest
+        env:
+          NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
+        run: docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" mail-notify-integration-rails-7:latest
