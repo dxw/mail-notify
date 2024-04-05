@@ -27,6 +27,9 @@ WORKDIR mail-notify-integration
 # install the gems into the bundle
 RUN bundle install
 
+# remove gems that will not work in Rails 5.2.8.1
+RUN if [ "${RAILS_VERSION}" = "5.2.8.1" ]; then bundle remove selenium-webdriver chromedriver-helper; fi
+
 # Final stage for app image
 FROM base
 
@@ -49,7 +52,9 @@ RUN echo "gem 'mail-notify', git: 'https://github.com/dxw/mail-notify', branch: 
 RUN bundle install
 
 # Copy over intergration test files
-COPY test/ test/
+COPY test/mailers/ test/mailers/
+COPY test/system/ test/system/
+COPY test/application_system_test_case.rb /test/application_system_test_case.rb
 COPY test/app/mailers/ app/mailers/
 COPY test/app/views/ app/views/
 
