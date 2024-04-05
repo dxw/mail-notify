@@ -7,10 +7,10 @@ require "mail/notify/version"
 Gem::Specification.new do |spec|
   spec.name = "mail-notify"
   spec.version = Mail::Notify::VERSION
-  spec.authors = ["Stuart Harrison"]
+  spec.authors = ["Stuart Harrison", "Meyric Rawlings"]
   spec.email = ["pezholio@gmail.com"]
 
-  spec.summary = "ActionMailer support for the GOV.UK Notify API"
+  spec.summary = "Rails plugin, send and preview email with GOV.UK Notify"
   spec.homepage = "https://github.com/dxw/mail-notify"
   spec.license = "MIT"
 

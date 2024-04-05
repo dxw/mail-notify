@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [2.0.0] - 2024-04-01
+
+- Version 2.0.0 rewrites most of the gem, without altering the API
+- The gem no longer prepends code in ActionMailer
+- Previews are now 100% supported in Rails, but will require a Notify API key
+- The preview layout has been updated and uses the Tudor Crown
+- This version fixes a bug that meant not all Rails preview functionality would
+  work
+- This version fixes a bug that meant no Rails preview functionality would work
+  from version 7.1.0 onwards
+
 ## [1.2.0] - 2023-04-28
 
 - Requiring Ruby 2.7.8
@@ -71,7 +82,10 @@ The format is based on [Keep a Changelog]
 
 - Initial release
 
-[unreleased]: https://github.com/DFE-Digital/dfe-teachers-payment-service/compare/1.0.3...HEAD
+[unreleased]: https://github.com/dxw/mail-notify/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/dxw/mail-notify/compare/1.2.0...2.0.0 
+[1.2.0]: https://github.com/dxw/mail-notify/compare/1.1.0...1.2.0 
+[1.1.0]: https://github.com/dxw/mail-notify/compare/1.0.5...1.1.0 
 [1.0.5]: https://github.com/dxw/mail-notify/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/dxw/mail-notify/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/dxw/mail-notify/compare/1.0.2...1.0.3
