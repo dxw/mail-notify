@@ -7,6 +7,33 @@ on:
       - v2
 
 jobs:
+  rails-5:
+    name: Rails 5 mailer previews
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and cache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            RAILS_VERSION=5.2.8.1
+            MAIL_NOTIFY_BRANCH=${{ github.ref }}
+          push: false
+          load: true
+          tags: mail-notify-integration-rails-5:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=min
+      -
+        name: Run integration tests
+        run: docker run --rm -e "NOTIFY_API_KEY=${{ secrets.NOTIFY_API_KEY }}" mail-notify-integration-rails-5:latest
   rails-6:
     name: Rails 6 mailer previews
     runs-on: ubuntu-latest
