@@ -54,6 +54,7 @@ RUN bundle install
 # Copy over intergration test files
 COPY test/mailers/ test/mailers/
 COPY test/system/ test/system/
+COPY test/integration test/integration
 COPY test/application_system_test_case.rb /test/application_system_test_case.rb
 COPY test/app/mailers/ app/mailers/
 COPY test/app/views/ app/views/
