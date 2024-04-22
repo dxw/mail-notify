@@ -11,13 +11,13 @@ SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.start
 
 require "bundler/setup"
+require "action_controller"
 require "action_mailer"
 require "pry"
-require "webmock/rspec"
 
 require "mail/notify"
-require "support/test_mailer"
 
+# we have to trick ActionMailer into looking for our test email view templates
 ActionMailer::Base.view_paths = File.join(File.dirname(__FILE__), "support", "templates")
 
 RSpec.configure do |config|

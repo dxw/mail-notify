@@ -7,10 +7,10 @@ require "mail/notify/version"
 Gem::Specification.new do |spec|
   spec.name = "mail-notify"
   spec.version = Mail::Notify::VERSION
-  spec.authors = ["Stuart Harrison"]
+  spec.authors = ["Stuart Harrison", "Meyric Rawlings"]
   spec.email = ["pezholio@gmail.com"]
 
-  spec.summary = "ActionMailer support for the GOV.UK Notify API"
+  spec.summary = "Rails plugin, send and preview email with GOV.UK Notify"
   spec.homepage = "https://github.com/dxw/mail-notify"
   spec.license = "MIT"
 
@@ -37,10 +37,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "webmock", "~> 3.23.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.13.0"
 
-  spec.add_dependency "actionmailer", ">= 5.2.4.6"
-  spec.add_dependency "activesupport", ">= 5.2.4.6"
-  spec.add_dependency "actionpack", ">= 5.2.7.1"
-  spec.add_dependency "actionview", ">= 5.2.7.1"
-  spec.add_dependency "notifications-ruby-client", "~> 5.1"
   spec.add_dependency "rack", ">= 2.1.4.1"
+  spec.add_dependency "actionmailer", ">= 5.2.8.1"
+  spec.add_dependency "activesupport", ">= 5.2.8.1"
+  spec.add_dependency "actionpack", ">= 5.2.8.1"
+  spec.add_dependency "actionview", ">= 5.2.8.1"
+  spec.add_dependency "notifications-ruby-client", "~> 6.0"
 end

@@ -5,7 +5,7 @@ require_relative "boot"
 require "rails/all"
 
 Bundler.require(*Rails.groups)
-require "mail/notify/railtie"
+require "mail/notify/engine"
 require "mail/notify"
 
 module Dummy
