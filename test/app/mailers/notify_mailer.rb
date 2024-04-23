@@ -18,4 +18,11 @@ class NotifyMailer < Mail::Notify::Mailer
 
     template_mail("5c9f8048-4283-40f8-9694-7dbb86b1f636", to: to, personalisation: {name: name})
   end
+
+  def template_with_blank_personalisation
+    name = params[:name]
+    to = params[:to]
+
+    template_mail("5c9f8048-4283-40f8-9694-7dbb86b1f636", to: to, personalisation: {name: blank_allowed(name)})
+  end
 end

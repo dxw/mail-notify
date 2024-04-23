@@ -46,6 +46,28 @@ class NotifyMailerPreviewTest < ActionDispatch::SystemTestCase
     assert_content "Template email message."
   end
 
+  # Template email previews with blank personalisation
+  test "previews the template email headers with blank personalisation" do
+    visit "/rails/mailers/notify_mailer/template_email_with_blank_personalisation"
+
+    assert_content "Template email subject"
+    assert_content "template.email@notifications.service.gov.uk"
+  end
+
+  test "previews the template email html body with blank personalisation" do
+    visit "/rails/mailers/notify_mailer/template_email_with_blank_personalisation?part=text%2Fhtml"
+
+    assert_content "Dear"
+    assert_content "Template email message."
+  end
+
+  test "previews the template email plain text body with blank personalisation" do
+    visit "/rails/mailers/notify_mailer/template_email_with_blank_personalisation?part=text%2Fplain"
+
+    assert_content "Dear"
+    assert_content "Template email message."
+  end
+
   # View email previews
   test "previews the view email headers" do
     visit "/rails/mailers/notify_mailer/view_email"
