@@ -4,9 +4,11 @@
 [![Rails integration tests](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml/badge.svg)](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
 
-# Mail::Notify
+# mail-notify
 
-Rails / ActionMailer support for the [GOV.UK Notify API](https://www.notifications.service.gov.uk).
+Rails plugin for [GOV.UK Notify](https://www.notifications.service.gov.uk).
+
+[Great products and services like yours use mail-notify!](https://github.com/dxw/mail-notify/wiki#some-services-and-products-that-use-mail-notify)
 
 ## Installation
 
@@ -20,11 +22,10 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Configuration
 
-    $ gem install mail-notify
-
-Then, add the following to your `config/environments/*.rb` (where * is `test`, `development`, `production` or whatever other environment(s) you have) file(s):
+Configure in each environment `config/environments/*.rb` (where * is `test`,
+`development`, `production` or whatever other environment(s) you have) file(s):
 
 ```ruby
 config.action_mailer.delivery_method = :notify
@@ -33,7 +34,13 @@ config.action_mailer.notify_settings = {
 }
 ```
 
-If you're using a different Notify service to GOV.UK Notify (for example [GOV.CA Notify](https://notification.alpha.canada.ca/)), you can also specify the Base URL in your setup:
+We recommend using separate Notify 'test' API keys (email will not be sent but
+can be seen in Notify) in all environments except production so you can confirm
+the integration and generate previews without actually sending any email.
+
+If you're using a different Notify service to GOV.UK Notify (for example [GOV.CA
+Notify](https://notification.alpha.canada.ca/)), you can also specify the Base
+URL in your setup:
 
 ```ruby
 config.action_mailer.delivery_method = :notify
@@ -45,116 +52,201 @@ config.action_mailer.notify_settings = {
 
 ### Mailers
 
-There are two options for using `Mail::Notify`, either templating in Rails with a view, or templating in Notify. Whichever way you choose, you'll need your mailers to inherit from `Mail::Notify::Mailer` like so:
+There are two options for using mail-notify, manage the content in Notify
+with [template mailers](#template-mailers) or in Rails with [view
+mailers](#view-mailers) you can mix the two approaches as you need.
+
+Whichever you choose, you'll need your mailers to inherit from `Mail::Notify::Mailer` like so:
 
 ```ruby
-class MyMailer < Mail::Notify::Mailer
+class MyCustomMailer < Mail::Notify::Mailer
 end
 ```
 
-#### With a view
-
-Out of the box, Notify offers support for templating, with some rudimentary logic included. If you'd rather have your templating logic included with your source code for ease of access, or you want to do some more complex logic that's not supported by Notify, you can template your mailer views in erb.
-
-For this to work with Notify, you'll need a very simple template set up in Notify, with a `((subject))` variable in the subject line, and a `((body))` variable in the body field, as below:
-
-![Example screenshot](docs/screenshot.png)
-
-Next, in your mailer you'll need to call `view_mail` with the first parameter being the ID of the notify template, followed by a hash of email headers e.g:
+We recommend going 'all in' with Notify and having `ApplicationMailer` inherit
+for mail-notify:
 
 ```ruby
-class MyMailer < Mail::Notify::Mailer
-    def send_email
-        view_mail('YOUR_TEMPLATE_ID_GOES_HERE',
-          to: 'mail@somewhere.com',
-          subject: 'Subject line goes here'
+class ApplicationMailer < Mail::Notify::Mailer
+end
+```
+
+then have each mailer inherit from `ApplicationMailer`:
+
+```ruby
+class MyCustomMailer < ApplicationMailer
+end
+```
+
+#### Template mailers
+
+Template mailers only require the template ID from Notify and an to email
+address, all of the content for the email is managed in Notify:
+
+```ruby
+class MyCustomMailer < ApplicationMailer
+    def welcome_email
+        to = params[:to]
+
+        template_mail("NOTIFY_TEMPLATE_ID", to: to)
+    end
+end
+
+# call the template mailer
+MyCustomMailer.with(to: "first.last@example.com").welcome_email.deliver_now!
+```
+
+You can add any number of
+[personalisations](https://www.notifications.service.gov.uk/using-notify/personalisation) to template mailers:
+
+```ruby
+class MyCustomMailer < ApplicationMailer
+    def appointment_email
+        to = params[:to]
+        name = params[:name]
+        appointment_date = params[:appointment_date]
+
+        template_mail(
+            "NOTIFY_TEMPLATE_ID", 
+            to: to,
+            personalisation: {
+                name: name,
+                appointment_date: date.to_s
+            }
         )
     end
 end
+
+# call the template mailer with personalisation options
+MyCustomMailer.with(
+    to: "first.last@example.com", 
+    name: "First Last", 
+    appointment_date: Date.new(2024, 01, 01)
+).appointment_email.deliver_now!
 ```
 
-Your view can then be a simple `text.erb` file. You can add some markdown for headers, bullet points and links etc. These are handled in the same way as standard action_mailer views.
-
-#### With Notify templating
-
-You can also send your customisations in the more traditional way, and do your templating in Notify if you prefer. For this, you'll need to call `template_mail`, again with the first parameter being the ID of the template, and a hash of email headers, including your personalisations, e.g:
+A note on blank personalisation; The Notify API will not allow `nil`
+personalisation, if you expect `nil` values, you can wrap them in
+`blank_allowed` which converts them to an empty string:
 
 ```ruby
-class MyMailer < Mail::Notify::Mailer
-    def send_email
-        template_mail('YOUR_TEMPLATE_ID_GOES_HERE',
-          to: 'mail@somewhere.com',
-          personalisation: {
-              foo: 'bar'
-          }
-        )
+MyCustomMailer.with(
+    to: "first.last@example.com", name: blank_allowed(user.name)).welcome_email.deliver_now!
+```
+
+Or use params as the examples above.
+
+#### View mailers
+
+View mailers let you manage the content of emails with a Rails text view, with
+Notify's markdown like
+[formatting](https://www.notifications.service.gov.uk/using-notify/formatting)
+supported.
+
+You will still require a template in Notify, the template must be setup with
+`subject` and `body` personalisations, which will be replaced with those from
+your mailer and view:
+
+![Screenshot of a view mailer template in Notify](docs/assets/images/view_template_in_notify.png)
+
+Your view mailer is then setup like this:
+
+```ruby
+class MyCustomMailer < ApplicationMailer
+    def welcome_email
+        to = params[:to]
+        subject= params[:subject]
+
+        view_mail("NOTIFY_TEMPLATE_ID", to: to, subject: subject)
     end
-end
 ```
 
-By default, any blank personalisation are removed from the request, which will trigger mail template validation. This is to avoid accidental blanks in the email. If you want to send a blank value, you need to explicitly state that the personalization can be blank:  
+With a `subject` being required.
+
+Add the view named appropriately and in the conventional location:
+
+`app/views/my_custom_mailer/welcome_email.text.erb`
+
+Add content to the view:
+
+```
+Dear <%= @user.name %>
+
+# Welcome to the service.
+
+Here are some points to note:
+
+* point one
+* point two
+* point three
+
+^ Don't forget this.
+
+```
+
+Then call the mailer as usual:
 
 ```ruby
-class MyMailer < Mail::Notify::Mailer
-  def send_email
-    template_mail('YOUR_TEMPLATE_ID_GOES_HERE',
-                  to: 'mail@somewhere.com',
-                  personalisation: {
-                    foo: foo.name, # This will trigger template validation error when blank
-                    bar: blank_allowed(bar.name) # This will inject empty string in the template when blank
-                  }
-    )
-  end
-end
+MyCustomMailer.with(
+    to: "first.last@example.com", 
+    subject: "Welcome to service"
+).welcome_email.deliver_now!
+
 ```
 
+Only plain text views can be used, with the Notify markdown like formatting
+options. The email is sent as both HTML and plain text by Notify.
 
 #### With optional Notify arguments
 
-It's possible to pass two optional arguments to Notify:
+It's possible to pass two optional arguments to Notify with either template or
+view mailers.
 
-- `reply_to_id`: This is an email reply-to address specified by you to receive replies from your users
-- `reference`: A unique identifier you can create if necessary. This reference identifies a single unique notification or a batch of notifications
+- `reply_to_id`: This is an email reply-to address specified by you to receive
+  replies from your users
+- `reference`: A unique identifier you can create if necessary. This reference
+  identifies a single unique notification or a batch of notifications
 
-More information can be [found in the docs](https://docs.notifications.service.gov.uk/ruby.html#send-an-email-arguments-personalisation-optional)
+More information can be [found in the
+Notify docs](https://docs.notifications.service.gov.uk/ruby.html#send-an-email-arguments-personalisation-optional)
 
 ```ruby
-class MyMailer < Mail::Notify::Mailer
-    def send_email
-        view_mail('YOUR_TEMPLATE_ID_GOES_HERE',
-          to: 'mail@somewhere.com',
-          subject: 'Subject line goes here',
-          reply_to_id: 'YOUR_REPLY_TO_ID_GOES_HERE',
-          reference: 'ABC123XYZ'
-        )
+class MyCustomMailer < ApplicationMailer
+    def welcome_email
+        to = params[:to]
+        reference = params[:reference]
+        reply_to_id = params[:reply_to_id]
+
+        template_mail("NOTIFY_TEMPLATE_ID", to: to, reply_to_id: reply_to_id, reference: reference)
     end
 end
-```
 
-#### With Devise
-
-If you're using [Devise](https://github.com/heartcombo/devise), you can overwrite your Devise mailer to use mail-notify for password reset emails etc.
-
-In `config/initializers/devise.rb`:
-
-```ruby
-config.mailer = 'DeviseMailer'
-```
-
-in `app/mailers/devise_mailer.rb`:
-
-```ruby
-class DeviseMailer < Devise::Mailer
-  def devise_mail(record, action, opts = {}, &block)
-    initialize_from_record(record)
-    view_mail(ENV['NOTIFY_TEMPLATE_ID'], headers_for(action, opts))
-  end
-end
+# call the mailer
+MyCustomMailer.with(
+        to: "first.last@example.com", 
+        reference: "YOUR_REFERENCE",
+        reply_to_id: "YOUR_REPLY_TO"
+    ).welcome_email.deliver_now!
 ```
 
 ## Previews
 
-If you're using ActionMailer with Rails, [previews](https://guides.rubyonrails.org/action_mailer_basics.html#previewing-emails) are supported too, and work in the same way as standard previews. Currently they're shown without any branding, but this may change in future.
+Rails [previews](https://guides.rubyonrails.org/action_mailer_basics.html#previewing-emails)
+are supported.
+
+The Rails delivery method must be set to `:notify` and a Notify API key will be
+required for previews to work as the [preview is
+generated](https://docs.notifications.service.gov.uk/ruby.html#generate-a-preview-template)
+by the Notify API.
+
+## With Devise
+
+Mail-notify is compatible with anything that uses ActionMailer,
+[Devise](https://github.com/heartcombo/devise) is a popular authentication gem
+that uses ActionMailer to send emails relating to
+accounts, see [instructions in the
+wiki](https://github.com/dxw/mail-notify/wiki/Use-with-Devise) for more details
+of using mail-notify with Devise.
 
 ## Development
 
@@ -168,12 +260,18 @@ tag the commit on main - the release will be built and published by the
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/dxw/mail-notify. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/dxw/mail-notify. This project is intended to be a safe,
+welcoming space for collaboration, and contributors are expected to adhere to
+the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT
+License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
-Everyone interacting in the Mail::Notify project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/pezholio/mail-notify/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Mail::Notify project’s codebases, issue trackers,
+chat rooms and mailing lists is expected to follow the [code of
+conduct](https://github.com/pezholio/mail-notify/blob/master/CODE_OF_CONDUCT.md).
