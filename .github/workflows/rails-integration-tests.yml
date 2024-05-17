@@ -6,23 +6,24 @@ on:
     branches:
       - main
 
-env:
-  RAILS_VERSIONS: '["5.2.8.1", "6.1.7.6", "7.1.3.2"]'
-
 jobs:
   set-matrix:
     runs-on: ubuntu-latest
     name: Set Rails versions
     outputs:
-      RAILS_VERSIONS: ${{ env.RAILS_VERSIONS }}
+      RAILS_VERSIONS: ${{ steps.compute-outputs.outputs.RAILS_VERSIONS }}
     steps:
-      - name: Compute outputs
+      # Get latest Rails versions for 5.x.x, 6.x.x and 7.x.x
+      - id: compute-outputs
+        name: Compute outputs
         run: |
-          echo "RAILS_VERSIONS=${{ env.RAILS_VERSIONS }}" >> $GITHUB_OUTPUT
+          rails_versions=$(curl https://rubygems.org/api/v1/versions/rails.json | jq 'group_by(.number[:1])[] | (.[0].number) | select(.[:1]|tonumber > 4)' | jq -s -c)
+          echo "RAILS_VERSIONS=$rails_versions" >> $GITHUB_OUTPUT
   build-rails:
     strategy:
       fail-fast: false
       matrix:
+        # Build containers with the latest 5.x.x, 6.x.x and 7.x.x Rails versions
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
     name: Build and cache Docker containers
@@ -53,6 +54,7 @@ jobs:
   mailer-previews:
     strategy:
       fail-fast: false
+      # Run against the latest 5.x.x, 6.x.x and 7.x.x Rails versions
       matrix:
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
@@ -76,6 +78,7 @@ jobs:
   sending:
     strategy:
       fail-fast: false
+      # Run against the latest 5.x.x, 6.x.x and 7.x.x Rails versions
       matrix:
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
