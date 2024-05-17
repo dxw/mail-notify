@@ -6,13 +6,25 @@ on:
     branches:
       - main
 
+env:
+  RAILS_VERSIONS: '["5.2.8.1", "6.1.7.6", "7.1.3.2"]'
+
 jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      RAILS_VERSIONS: ${{ env.RAILS_VERSIONS }}
+    steps:
+      - name: Compute outputs
+        run: |
+          echo "RAILS_VERSIONS=${{ env.RAILS_VERSIONS }}" >> $GITHUB_OUTPUT
   build-rails:
     strategy:
       fail-fast: false
       matrix:
-        rails: [ 5.2.8.1, 6.1.7.6, 7.1.3.2 ]
+        rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
+    needs: set-matrix
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,9 +52,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rails: [ 5.2.8.1, 6.1.7.6, 7.1.3.2 ]
+        rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
-    needs: build-rails
+    needs:
+      - set-matrix
+      - build-rails
     steps:
       - name: Download image
         uses: actions/download-artifact@v4
@@ -61,9 +75,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rails: [ 5.2.8.1, 6.1.7.6, 7.1.3.2 ]
+        rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
-    needs: build-rails
+    needs:
+      - set-matrix
+      - build-rails
     steps:
       - name: Download image
         uses: actions/download-artifact@v4
