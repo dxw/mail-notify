@@ -1,4 +1,4 @@
-[![Build status](https://github.com/dxw/mail-notify/actions/workflows/ci.yml/badge.svg)](https://github.com/dxw/mail-notify/actions/workflows/ci.yml)
+[![Build status](https://github.com/dxw/mail-notify/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/dxw/mail-notify/actions/workflows/unit-tests.yml)
 [![Coverage status](https://coveralls.io/repos/github/dxw/mail-notify/badge.svg?branch=fix-coveralls)](https://coveralls.io/github/dxw/mail-notify?branch=fix-coveralls)
 [![Gem Version](http://img.shields.io/gem/v/mail-notify.svg?style=flat-square)](https://rubygems.org/gems/mail-notify)
 [![Rails integration tests](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml/badge.svg)](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml)
