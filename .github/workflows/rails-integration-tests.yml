@@ -12,6 +12,7 @@ env:
 jobs:
   set-matrix:
     runs-on: ubuntu-latest
+    name: Set Rails versions
     outputs:
       RAILS_VERSIONS: ${{ env.RAILS_VERSIONS }}
     steps:
@@ -24,6 +25,7 @@ jobs:
       matrix:
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
+    name: Build and cache Docker containers
     needs: set-matrix
     steps:
       - name: Checkout
