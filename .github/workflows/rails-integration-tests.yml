@@ -96,3 +96,19 @@ jobs:
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
           mail-notify-integration-rails-${{ matrix.rails }}:latest bin/rails test
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: All integration tests
+    needs:
+      - mailer-previews
+      - sending
+    steps:
+      # If any of the previous actions failed, we return a non-zero exit code
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+            || contains(needs.*.result, 'skipped')
+          }}
