@@ -43,8 +43,8 @@ jobs:
           push: false
           tags: mail-notify-integration-rails-${{ matrix.rails }}:latest
           outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-image.tar
-          cache-from: type=gha
-          cache-to: type=gha,mode=min
+          cache-from: type=gha,scope=build-${{ matrix.rails }}
+          cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
