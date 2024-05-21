@@ -24,3 +24,17 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           fail-on-error: false
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: All unit tests
+    needs: [ unit-tests ]
+    steps:
+      # If any of the previous actions failed, we return a non-zero exit code
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+            || contains(needs.*.result, 'skipped')
+          }}
