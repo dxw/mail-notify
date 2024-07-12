@@ -15,6 +15,10 @@ RUN apt-get update -qq && \
 # Install Nokigiri version that supports Ruby 2.7.8
 RUN gem install nokogiri -v 1.15.6
 
+# add a newer version of Rubygems and Bundler
+RUN gem install bundler:2.3.22
+RUN gem update --system 3.3.22
+
 # Install Rails
 ARG RAILS_VERSION=7.1.3.2
 RUN gem install rails -v ${RAILS_VERSION}
@@ -35,7 +39,7 @@ FROM base
 
 # Install packages needed for running the tests
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl git && \
+    apt-get install --no-install-recommends -y build-essential curl git && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
