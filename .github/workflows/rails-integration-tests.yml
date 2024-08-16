@@ -17,7 +17,7 @@ jobs:
       - id: compute-outputs
         name: Compute outputs
         run: |
-          rails_versions=$(curl https://rubygems.org/api/v1/versions/rails.json | jq '[.[] | select(.number | test("beta") | not)] | group_by(.number[:1])[] | (.[0].number) | select(.[:1]|tonumber > 4)' | jq -s -c)
+          rails_versions=$(curl https://rubygems.org/api/v1/versions/rails.json | jq '[.[] | select(.number | test("beta") | not)] | group_by(.number[:1])[] | (.[0].number) | select(.[:1]|tonumber > 5)' | jq -s -c)
           echo "RAILS_VERSIONS=$rails_versions" >> $GITHUB_OUTPUT
   build-rails:
     strategy:
