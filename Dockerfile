@@ -16,7 +16,7 @@ RUN apt-get update -qq && \
 RUN gem install nokogiri -v 1.15.6
 
 # Install Rails
-ARG RAILS_VERSION=7.1.3.2
+ARG RAILS_VERSION=7.2.1
 RUN gem install rails -v ${RAILS_VERSION}
 
 # create empty Rails application, we don't need ActiveRecord or JavaScript
