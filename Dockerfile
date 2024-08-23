@@ -1,5 +1,4 @@
-# We want to support older Rubies
-ARG RUBY_VERSION=2.7.8
+ARG RUBY_VERSION=3.1.6
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -12,9 +11,6 @@ FROM base AS build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential curl git
 
-# Install Nokigiri version that supports Ruby 2.7.8
-RUN gem install nokogiri -v 1.15.6
-
 # Install Rails
 ARG RAILS_VERSION=7.2.1
 RUN gem install rails -v ${RAILS_VERSION}
@@ -26,9 +22,6 @@ WORKDIR mail-notify-integration
 
 # install the gems into the bundle
 RUN bundle install
-
-# remove gems that will not work in Rails 5.2.8.1
-RUN if [ "${RAILS_VERSION}" = "5.2.8.1" ]; then bundle remove selenium-webdriver chromedriver-helper; fi
 
 # Final stage for app image
 FROM base
