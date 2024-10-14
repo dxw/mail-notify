@@ -84,8 +84,27 @@ module Mail
 
         # we have to render the view for the message and grab the raw source,
         # then we set that as the body in the personalisation for sending to
-        # the Notify API.
+        # the Notify API. 
+        #
+        # Calling the #mail method is not idempotent. It
+        # modifies state by setting instance variables on the message.
+        # Specifically, it sets @_message. mail generates message headers for
+        # the options passed in. Each time it is called with the same headers
+        # it adds another header field. This results in something like this
+        #
+        # mail({custom_header => 123})
+        # message.header['custom_header']
+        # #=> Mail::Field
+        #
+        # mail({custom_header => 123})
+        # message.header['custom_header']
+        # #=> [Mail::Field..., Mail::Field...]
+        #
+        original_message = message.dup
+
         body = mail(headers).body.raw_source
+
+        @_message = original_message
 
         # The 'view mail' works by sending a subject and body as
         # personalisation options, these are then used in the Notify template

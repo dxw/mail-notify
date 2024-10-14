@@ -14,6 +14,16 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.template_id).to eql("template-id")
     end
 
+    it "sets a custom value as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", custom_header: "custom"}
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:custom_header]).to be_a(Mail::Field)
+      expect(message.header[:custom_header].value).to eq('custom')
+    end
+
     it "does not set reply_to_id as a header" do
       message_params = {template_id: "template-id", to: "test.name@email.co.uk",
                         subject: "Test subject", reply_to_id: "123"}
