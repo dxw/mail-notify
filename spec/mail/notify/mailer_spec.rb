@@ -6,7 +6,8 @@ require "mailers/test_mailer"
 RSpec.describe Mail::Notify::Mailer do
   describe "#view_mail" do
     it "sets the message template id" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -14,7 +15,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the message subject" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -23,7 +25,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the message to address" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -32,7 +35,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the subject on personalisation" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -40,7 +44,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the body on personalisation" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -145,7 +150,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the subject if one is passed, even though it will not be used" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "My subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "My subject"}
 
       message = TestMailer.with(message_params).test_template_mail
 
