@@ -3,13 +3,14 @@
 module Mail
   module Notify
     ##
-    # The Mail Notify base Mailer class, overridden in Rails applications to provide the additional
-    # Notify behaviour along with the application behaviour.
+    # The Mail Notify base Mailer class, overridden in Rails applications to
+    # provide the additional Notify behaviour along with the application
+    # behaviour.
 
     class Mailer < ActionMailer::Base
       ##
-      # Set a default from address, will only be used in previews if a from address is not supplied
-      # by subclasses
+      # Set a default from address, will only be used in previews if a from
+      # address is not supplied by subclasses
 
       default from: "preview@notifications.service.gov.uk"
 
@@ -25,12 +26,17 @@ module Mail
       #
       # Add any additional headers in the options hash.
       #
-      # A default subject is supplied as ActionMailer requires one, however it will never be used as
-      # the subject is assumed to be managed in the Notify template.
+      # A default subject is supplied as ActionMailer requires one, however it
+      # will never be used as the subject is assumed to be managed in the
+      # Notify template.
 
       def template_mail(template_id, options)
         raise ArgumentError, "You must specify a Notify template ID" if template_id.blank?
-        raise ArgumentError, "You must specify a to address" if options[:to].nil? || options[:to].blank?
+
+        if options[:to].nil? || options[:to].blank?
+          raise ArgumentError,
+                "You must specify a to address"
+        end
 
         message.template_id = template_id
         message.reply_to_id = options[:reply_to_id]
@@ -38,13 +44,13 @@ module Mail
 
         message.personalisation = options[:personalisation] || {}
 
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
         headers[:subject] = "Subject managed in Notify" unless options[:subject]
 
-        # We have to set the html and the plain text content to nil to prevent Rails from looking
-        # for the content in the views. We replace nil with the content returned from Notify before
-        # sending or previewing
+        # We have to set the html and the plain text content to nil to prevent
+        # Rails from looking for the content in the views. We replace nil with
+        # the content returned from Notify before sending or previewing
         mail(headers) do |format|
           format.text { nil }
           format.html { nil }
@@ -74,14 +80,35 @@ module Mail
         message.reference = options[:reference]
 
         subject = options[:subject]
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
-        # we have to render the view for the message and grab the raw source, then we set that as the
-        # body in the personalisation for sending to the Notify API.
+        # we have to render the view for the message and grab the raw source,
+        # then we set that as the body in the personalisation for sending to
+        # the Notify API. 
+        #
+        # Calling the #mail method is not idempotent. It
+        # modifies state by setting instance variables on the message.
+        # Specifically, it sets @_message. mail generates message headers for
+        # the options passed in. Each time it is called with the same headers
+        # it adds another header field. This results in something like this
+        #
+        # mail({custom_header => 123})
+        # message.header['custom_header']
+        # #=> Mail::Field
+        #
+        # mail({custom_header => 123})
+        # message.header['custom_header']
+        # #=> [Mail::Field..., Mail::Field...]
+        #
+        original_message = message.dup
+
         body = mail(headers).body.raw_source
 
-        # The 'view mail' works by sending a subject and body as personalisation options, these are
-        # then used in the Notify template to provide content.
+        @_message = original_message
+
+        # The 'view mail' works by sending a subject and body as
+        # personalisation options, these are then used in the Notify template
+        # to provide content.
         message.personalisation = {subject: subject, body: body}
 
         mail(headers) do |format|

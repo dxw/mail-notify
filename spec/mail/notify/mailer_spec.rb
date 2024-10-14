@@ -6,15 +6,54 @@ require "mailers/test_mailer"
 RSpec.describe Mail::Notify::Mailer do
   describe "#view_mail" do
     it "sets the message template id" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
       expect(message.template_id).to eql("template-id")
     end
 
+    it "sets a custom value as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", custom_header: "custom"}
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:custom_header]).to be_a(Mail::Field)
+      expect(message.header[:custom_header].value).to eq('custom')
+    end
+
+    it "does not set reply_to_id as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", reply_to_id: "123"}
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:reply_to_id]).to be_nil
+    end
+
+    it "does not set reference as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", reference: "ref-123"}
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:reference]).to be_nil
+    end
+
+    it "does not set personalisation as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", personalisation: "Dear sir"}
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:personalisation]).to be_nil
+    end
+
     it "sets the message subject" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -23,7 +62,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the message to address" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -32,7 +72,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the subject on personalisation" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -40,7 +81,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the body on personalisation" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "Test subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject"}
 
       message = TestMailer.with(message_params).test_view_mail
 
@@ -126,6 +168,33 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.template_id).to eql("template-id")
     end
 
+    it "does not set reply_to_id as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", reply_to_id: "123"}
+
+      message = TestMailer.with(message_params).test_template_mail
+
+      expect(message.header[:reply_to_id]).to be_nil
+    end
+
+    it "does not set reference as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", reference: "ref-123"}
+
+      message = TestMailer.with(message_params).test_template_mail
+
+      expect(message.header[:reference]).to be_nil
+    end
+
+    it "does not set personalisation as a header" do
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "Test subject", personalisation: "Dear sir"}
+
+      message = TestMailer.with(message_params).test_template_mail
+
+      expect(message.header[:personalisation]).to be_nil
+    end
+
     it "sets the message to address" do
       message_params = {template_id: "template-id", to: "test.name@email.co.uk"}
 
@@ -145,7 +214,8 @@ RSpec.describe Mail::Notify::Mailer do
     end
 
     it "sets the subject if one is passed, even though it will not be used" do
-      message_params = {template_id: "template-id", to: "test.name@email.co.uk", subject: "My subject"}
+      message_params = {template_id: "template-id", to: "test.name@email.co.uk",
+                        subject: "My subject"}
 
       message = TestMailer.with(message_params).test_template_mail
 
