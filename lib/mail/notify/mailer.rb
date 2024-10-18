@@ -38,7 +38,7 @@ module Mail
 
         message.personalisation = options[:personalisation] || {}
 
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
         headers[:subject] = "Subject managed in Notify" unless options[:subject]
 
@@ -74,7 +74,7 @@ module Mail
         message.reference = options[:reference]
 
         subject = options[:subject]
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
         # we have to render the view for the message and grab the raw source, then we set that as the
         # body in the personalisation for sending to the Notify API.
