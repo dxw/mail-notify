@@ -133,7 +133,7 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.header[:reference]).to be_nil
     end
 
-    it "sets custom headers only once" do
+    it "only includes to and subject headers" do
       message_params = {
         template_id: "template-id",
         to: "test.name@email.co.uk",
@@ -143,8 +143,8 @@ RSpec.describe Mail::Notify::Mailer do
 
       message = TestMailer.with(message_params).test_view_mail
 
-      expect(message.header["custom-header"]).to be_a(Mail::Field)
-      expect(message.header["custom-header"].value).to eq("custom header value")
+      expect(message.header["custom-header"]).to be_nil
+      expect(message.header["template-id"]).to be_nil
     end
   end
 
@@ -173,6 +173,21 @@ RSpec.describe Mail::Notify::Mailer do
 
       expect(message.header[:subject]).to be_a Mail::Field
       expect(message.header[:subject].value).to eql("Subject managed in Notify")
+    end
+
+    context "when passed a subject" do
+      it "uses that subject" do
+        message_params = {
+          template_id: "template-id",
+          to: "test.name@email.co.uk",
+          subject: "Test subject"
+        }
+
+        message = TestMailer.with(message_params).test_template_mail
+
+        expect(message.header[:subject]).to be_a Mail::Field
+        expect(message.header[:subject].value).to eql("Test subject")
+      end
     end
 
     it "sets the subject if one is passed, even though it will not be used" do
@@ -251,7 +266,7 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.header[:reference]).to be_nil
     end
 
-    it "sets custom headers only once" do
+    it "only includes to and subject headers" do
       message_params = {
         template_id: "template-id",
         to: "test.name@email.co.uk",
@@ -261,8 +276,7 @@ RSpec.describe Mail::Notify::Mailer do
 
       message = TestMailer.with(message_params).test_view_mail
 
-      expect(message.header["custom-header"]).to be_a(Mail::Field)
-      expect(message.header["custom-header"].value).to eq("custom header value")
+      expect(message.header["custom-header"]).to be_nil
     end
   end
 

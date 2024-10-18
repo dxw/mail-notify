@@ -21,9 +21,13 @@ module Mail
       # - template_id
       # - to address
       #
-      # Can include personalisation.
       #
-      # Add any additional headers in the options hash.
+      # The optional arguments are:
+      #
+      # - subject
+      # - personalisation
+      # - reply_to_id
+      # - reference
       #
       # A default subject is supplied as ActionMailer requires one, however it will never be used as
       # the subject is assumed to be managed in the Notify template.
@@ -35,12 +39,9 @@ module Mail
         message.template_id = template_id
         message.reply_to_id = options[:reply_to_id]
         message.reference = options[:reference]
-
         message.personalisation = options[:personalisation] || {}
 
-        headers = options.except(:personalisation, :reply_to_id, :reference)
-
-        headers[:subject] = "Subject managed in Notify" unless options[:subject]
+        headers = {to: options[:to], subject: options[:subject] || "Subject managed in Notify"}
 
         # We have to set the html and the plain text content to nil to prevent Rails from looking
         # for the content in the views. We replace nil with the content returned from Notify before
@@ -60,9 +61,13 @@ module Mail
       # - to address
       # - subject
       #
-      # Personalisation will dropped as all content comes from the view provided by Rails.
+      # The optional arguments are:
       #
-      # Add any additional headers in the options hash.
+      # - personalisation
+      # - reply_to_id
+      # - reference
+      #
+      # Personalisation will be dropped as all content comes from the view provided by Rails.
 
       def view_mail(template_id, options)
         raise ArgumentError, "You must specify a Notify template ID" if template_id.blank?
@@ -74,13 +79,13 @@ module Mail
         message.reference = options[:reference]
 
         subject = options[:subject]
-        headers = options.except(:personalisation, :reply_to_id, :reference)
+        headers = {to: options[:to], subject: options[:subject]}
 
         # We have to render the view for the message and grab the raw source, then we set that as the
         # body in the personalisation for sending to the Notify API.
         #
         # We do not pass the headers as the call to `mail` will keep adding headers resulting in
-        # duplication when we have to call it again later.
+        # potential duplication when we have to call it again later.
         body = mail.body.raw_source
 
         # The 'view mail' works by sending a subject and body as personalisation options, these are

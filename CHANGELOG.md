@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog]
   included in the preview email headers for no reason - thanks to @inulty-dfe
 - Fixed a bug in `view_mail` that meant custom headers in the preview email were
   duplicated - thanks to @inulty-dfe
+- Custom headers passed in the options to `view_mail` and `template_mail` will
+  no longer be passed to the preview email.
 
 ## [2.0.0] - 2024-04-01
 
