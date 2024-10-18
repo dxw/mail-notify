@@ -13,7 +13,7 @@ SimpleCov.start
 require "bundler/setup"
 require "action_controller"
 require "action_mailer"
-require "pry"
+require "debug"
 
 require "mail/notify"
 
