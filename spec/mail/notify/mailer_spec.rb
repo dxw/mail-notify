@@ -132,6 +132,20 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.header[:reply_to_id]).to be_nil
       expect(message.header[:reference]).to be_nil
     end
+
+    it "sets custom headers only once" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        custom_header: "custom header value"
+      }
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header["custom-header"]).to be_a(Mail::Field)
+      expect(message.header["custom-header"].value).to eq("custom header value")
+    end
   end
 
   describe "#template_email" do
@@ -235,6 +249,20 @@ RSpec.describe Mail::Notify::Mailer do
       expect(message.header[:personalisation]).to be_nil
       expect(message.header[:reply_to_id]).to be_nil
       expect(message.header[:reference]).to be_nil
+    end
+
+    it "sets custom headers only once" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        custom_header: "custom header value"
+      }
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header["custom-header"]).to be_a(Mail::Field)
+      expect(message.header["custom-header"].value).to eq("custom header value")
     end
   end
 
