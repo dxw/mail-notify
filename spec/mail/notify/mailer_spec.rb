@@ -202,6 +202,22 @@ RSpec.describe Mail::Notify::Mailer do
 
       expect(message.reference).to eql("test-reference")
     end
+
+    it "sets one_click_unsubscribe_url" do
+      one_click_unsubscribe_url = "https://www.example.com/unsubscribe?opaque=123"
+
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        reference: "test-reference",
+        one_click_unsubscribe_url:
+      }
+
+      message = TestMailer.with(message_params).test_template_mail
+
+      expect(message.one_click_unsubscribe_url).to eql(one_click_unsubscribe_url)
+    end
   end
 
   describe "#blank_allowed" do

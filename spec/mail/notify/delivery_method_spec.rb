@@ -177,6 +177,25 @@ RSpec.describe Mail::Notify::DeliveryMethod do
   end
 
   describe "Notify optional fields" do
+    context "when no optional fields present" do
+      it "optional fields not present in the call to the Notify API" do
+        message = TestMailer.with(
+          template_id: "test-id",
+          to: "test.name@email.co.uk"
+        ).test_template_mail
+
+        notifications_client = mock_notifications_client
+
+        message.delivery_method.deliver!(message)
+
+        expect(notifications_client).to have_received(:send_email).with(
+          template_id: "test-id",
+          email_address: "test.name@email.co.uk",
+          personalisation: {}
+        )
+      end
+    end
+
     describe "email_reply_to_id" do
       it "is present in the API call when set" do
         message = TestMailer.with(
@@ -194,23 +213,6 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           email_address: "test.name@email.co.uk",
           personalisation: {},
           email_reply_to_id: "test-reply-to-id"
-        )
-      end
-
-      it "is not present in the call to the Notify API when not set" do
-        message = TestMailer.with(
-          template_id: "test-id",
-          to: "test.name@email.co.uk"
-        ).test_template_mail
-
-        notifications_client = mock_notifications_client
-
-        message.delivery_method.deliver!(message)
-
-        expect(notifications_client).to have_received(:send_email).with(
-          template_id: "test-id",
-          email_address: "test.name@email.co.uk",
-          personalisation: {}
         )
       end
     end
@@ -234,11 +236,16 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           reference: "test-reference"
         )
       end
+    end
 
-      it "is not present in the call to the Notify API when not set" do
+    describe "one_click_unsubscribe_url" do
+      it "is present in the API call when set" do
+        one_click_unsubscribe_url = "https://www.example.com/unsubscribe?opaque=123"
+
         message = TestMailer.with(
           template_id: "test-id",
-          to: "test.name@email.co.uk"
+          to: "test.name@email.co.uk",
+          one_click_unsubscribe_url:
         ).test_template_mail
 
         notifications_client = mock_notifications_client
@@ -248,7 +255,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
         expect(notifications_client).to have_received(:send_email).with(
           template_id: "test-id",
           email_address: "test.name@email.co.uk",
-          personalisation: {}
+          personalisation: {},
+          one_click_unsubscribe_url:
         )
       end
     end
