@@ -115,6 +115,37 @@ RSpec.describe Mail::Notify::Mailer do
         ArgumentError, "You must specify a subject"
       )
     end
+
+    it "does not include the personalisation, reply_to_id or reference options in the headers" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        personalisation: "test-personalisation",
+        reply_to_id: "test@replyto.com",
+        reference: "test-reference"
+      }
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header[:personalisation]).to be_nil
+      expect(message.header[:reply_to_id]).to be_nil
+      expect(message.header[:reference]).to be_nil
+    end
+
+    it "sets custom headers only once" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        custom_header: "custom header value"
+      }
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header["custom-header"]).to be_a(Mail::Field)
+      expect(message.header["custom-header"].value).to eq("custom header value")
+    end
   end
 
   describe "#template_email" do
@@ -201,6 +232,37 @@ RSpec.describe Mail::Notify::Mailer do
       message = TestMailer.with(message_params).test_template_mail
 
       expect(message.reference).to eql("test-reference")
+    end
+
+    it "does not include the personalisation, reply_to_id or reference options in the headers" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        personalisation: "test-personalisation",
+        reply_to_id: "test@replyto.com",
+        reference: "test-reference"
+      }
+
+      message = TestMailer.with(message_params).test_template_mail
+
+      expect(message.header[:personalisation]).to be_nil
+      expect(message.header[:reply_to_id]).to be_nil
+      expect(message.header[:reference]).to be_nil
+    end
+
+    it "sets custom headers only once" do
+      message_params = {
+        template_id: "template-id",
+        to: "test.name@email.co.uk",
+        subject: "Test subject",
+        custom_header: "custom header value"
+      }
+
+      message = TestMailer.with(message_params).test_view_mail
+
+      expect(message.header["custom-header"]).to be_a(Mail::Field)
+      expect(message.header["custom-header"].value).to eq("custom header value")
     end
   end
 
