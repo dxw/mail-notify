@@ -206,6 +206,8 @@ view mailers.
   replies from your users
 - `reference`: A unique identifier you can create if necessary. This reference
   identifies a single unique notification or a batch of notifications
+- `one_click_unsubscribe_url`: The URL email client will POST to in order to
+  unsubscribe from the mailing list
 
 More information can be [found in the
 Notify docs](https://docs.notifications.service.gov.uk/ruby.html#send-an-email-arguments-personalisation-optional)

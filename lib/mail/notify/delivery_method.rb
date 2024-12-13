@@ -17,7 +17,8 @@ module Mail
           email_address: message.to.first,
           personalisation: message.personalisation,
           email_reply_to_id: message.reply_to_id,
-          reference: message.reference
+          reference: message.reference,
+          one_click_unsubscribe_url: message.one_click_unsubscribe_url
         }
 
         client.send_email(params.compact)
