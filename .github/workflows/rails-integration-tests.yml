@@ -41,7 +41,8 @@ jobs:
           file: ./Dockerfile
           build-args: |
             RAILS_VERSION=${{ matrix.rails }}
-            MAIL_NOTIFY_BRANCH=${{ github.ref }}
+            MAIL_NOTIFY_BRANCH=${{ github.head_ref || github.ref_name }}
+            RUBY_VERSION=3.2.6
           push: false
           tags: mail-notify-integration-rails-${{ matrix.rails }}:latest
           outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-image.tar
