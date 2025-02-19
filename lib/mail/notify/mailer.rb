@@ -38,7 +38,7 @@ module Mail
 
         message.personalisation = options[:personalisation] || {}
 
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
         headers[:subject] = "Subject managed in Notify" unless options[:subject]
 
@@ -74,11 +74,14 @@ module Mail
         message.reference = options[:reference]
 
         subject = options[:subject]
-        headers = options.except([:personalisation, :reply_to_id, :reference])
+        headers = options.except(:personalisation, :reply_to_id, :reference)
 
-        # we have to render the view for the message and grab the raw source, then we set that as the
+        # We have to render the view for the message and grab the raw source, then we set that as the
         # body in the personalisation for sending to the Notify API.
-        body = mail(headers).body.raw_source
+        #
+        # We do not pass the headers as the call to `mail` will keep adding headers resulting in
+        # duplication when we have to call it again later.
+        body = mail.body.raw_source
 
         # The 'view mail' works by sending a subject and body as personalisation options, these are
         # then used in the Notify template to provide content.

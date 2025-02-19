@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Fixed a bug in `view_mail` and `template_mail` that meant the options were being
+  included in the preview email headers for no reason - thanks to @inulty-dfe
+- Fixed a bug in `view_mail` that meant custom headers in the preview email were
+  duplicated - thanks to @inulty-dfe
+
 ## [2.0.0] - 2024-04-01
 
 - Version 2.0.0 rewrites most of the gem, without altering the API
