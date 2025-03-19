@@ -42,7 +42,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
   config.action_mailer.show_previews = true
   config.consider_all_requests_local = true
-  config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+  config.action_mailer.preview_paths << "#{Rails.root}/lib/mailer_previews"
 
   config.action_mailer.delivery_method = :notify
   config.action_mailer.notify_settings = {
