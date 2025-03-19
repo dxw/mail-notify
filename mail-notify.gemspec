@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "debug"
   spec.add_development_dependency "rails", "7.2.2.1"
   spec.add_development_dependency "rake", "~> 13.2.1"
-  spec.add_development_dependency "rspec-rails", "~> 5.1"
+  spec.add_development_dependency "rspec-rails", "~> 7.1"
   spec.add_development_dependency "standard", "~> 1"
   spec.add_development_dependency "sqlite3", "~> 1.7.2"
   spec.add_development_dependency "webmock", "~> 3.23.0"
