@@ -67,15 +67,15 @@ jobs:
             RAILS_VERSION=${{ matrix.rails }}
             RUBY_VERSION=${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
           push: false
-          tags: mail-notify-integration-rails-${{ matrix.rails }}:latest
-          outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-image.tar
-          cache-from: type=gha,scope=build-${{ matrix.rails }}
-          cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}
+          tags: mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest
+          outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
+          cache-from: type=gha,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
+          cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: rails-${{ matrix.rails }}-image
-          path: /tmp/rails-${{ matrix.rails }}-image.tar
+          name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
+          path: /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
   mailer-previews:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
