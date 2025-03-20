@@ -35,6 +35,7 @@ module Mail
         message.template_id = template_id
         message.reply_to_id = options[:reply_to_id]
         message.reference = options[:reference]
+        message.one_click_unsubscribe_url = options[:one_click_unsubscribe_url]
 
         message.personalisation = options[:personalisation] || {}
 
