@@ -1,8 +1,10 @@
 name: CodeQL Analysis
 
 on:
-  workflow_call:
-
+  pull_request:
+  push:
+    branches:
+      - main
 jobs:
   analyze:
     name: Analyze
