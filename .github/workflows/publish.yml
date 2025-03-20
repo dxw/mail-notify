@@ -1,5 +1,7 @@
 name: Publish to rubygems
 
+permissions: {}
+
 on:
   push:
     tags:
@@ -10,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
     - name: Setup Rubygems
