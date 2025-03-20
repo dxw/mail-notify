@@ -1,4 +1,5 @@
 name: Unit tests
+permissions: {}
 on:
   pull_request:
   push:
@@ -14,6 +15,8 @@ jobs:
     name: Run specs and coverage report
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}

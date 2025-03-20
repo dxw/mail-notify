@@ -1,8 +1,12 @@
 name: CodeQL Analysis
 
-on:
-  workflow_call:
+permissions: {}
 
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 jobs:
   analyze:
     name: Analyze
@@ -14,6 +18,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           show-progress: false
+          persist-credentials: false
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@5f8171a638ada777af81d42b55959a643bb29017 # v3

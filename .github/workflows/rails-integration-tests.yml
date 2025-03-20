@@ -1,20 +1,16 @@
 name: Rails integration tests
 
+permissions: {}
+
 on:
-  pull_request_target:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [CodeQL Analysis, Linting, Unit tests]
+    types:
+      - completed
 
 jobs:
-  codeql-sast:
-    name: CodeQL scan
-    uses: ./.github/workflows/codeql.yml
-    permissions:
-      security-events: write
   set-matrix:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     name: Set Rails versions
     outputs:
@@ -28,6 +24,7 @@ jobs:
           rails_versions=$(curl https://rubygems.org/api/v1/versions/rails.json | jq '[.[] | select(.number | test("beta") | not)] | group_by(.number[:1])[] | (.[0].number) | select(.[:1]|tonumber > 6)' | jq -s -c)
           echo "RAILS_VERSIONS=$rails_versions" >> $GITHUB_OUTPUT
   set-ruby-version:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     name: Set Ruby version
     outputs:
@@ -35,11 +32,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - id: set-ruby-version
         name: Set Ruby version
         run: |
           echo "RUBY_VERSION=$(cat .ruby-version)" >> $GITHUB_OUTPUT
   build-rails:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       matrix:
@@ -54,6 +54,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and cache
@@ -65,16 +67,17 @@ jobs:
             RAILS_VERSION=${{ matrix.rails }}
             RUBY_VERSION=${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
           push: false
-          tags: mail-notify-integration-rails-${{ matrix.rails }}:latest
-          outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-image.tar
-          cache-from: type=gha,scope=build-${{ matrix.rails }}
-          cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}
+          tags: mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest
+          outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
+          cache-from: type=gha,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
+          cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: rails-${{ matrix.rails }}-image
-          path: /tmp/rails-${{ matrix.rails }}-image.tar
+          name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
+          path: /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
   mailer-previews:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       # Run against the latest 6.x.x and 7.x.x Rails versions
@@ -101,6 +104,7 @@ jobs:
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
           mail-notify-integration-rails-${{ matrix.rails }}:latest bin/rails test:system
   sending:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       # Run against the latest 5.x.x, 6.x.x and 7.x.x Rails versions
