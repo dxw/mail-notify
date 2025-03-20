@@ -39,7 +39,8 @@ WORKDIR /rails/mail-notify-integration
 
 # add Mail Notify to the Gemfile
 ARG MAIL_NOTIFY_BRANCH=2.0.0
-RUN echo "gem 'mail-notify', git: 'https://github.com/dxw/mail-notify', branch: '${MAIL_NOTIFY_BRANCH}'" >> Gemfile
+ARG MAIL_NOTIFY_REPO='https://github.com/dxw/mail-notify'
+RUN echo "gem 'mail-notify', git: '${MAIL_NOTIFY_REPO}', branch: '${MAIL_NOTIFY_BRANCH}'" >> Gemfile
 
 # install the mail-notify gem, we do this here to keep the last container layer small to help caching
 RUN bundle install
