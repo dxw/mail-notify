@@ -55,8 +55,6 @@ jobs:
           file: ./Dockerfile
           build-args: |
             RAILS_VERSION=${{ matrix.rails }}
-            MAIL_NOTIFY_BRANCH=${{ github.head_ref || github.ref_name }}
-            MAIL_NOTIFY_REPO=${{ github.server_url }}/${{ github.repository }}
             RUBY_VERSION=${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
           push: false
           tags: mail-notify-integration-rails-${{ matrix.rails }}:latest
