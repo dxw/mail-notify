@@ -1,7 +1,9 @@
 name: Rails integration tests
 
 permissions: {}
-
+env: 
+  MATRIX_RAILS: ${{ matrix.rails }}
+  RUBY_VERSION: ${{ needs.set-ruby-version.outputs.RUBY_VERSION }} 
 on:
   pull_request_target:
     types: [opened, synchronize]
@@ -19,10 +21,14 @@ jobs:
           username: ${{ github.triggering_actor }}
       - name: Check User Permission
         if: steps.checkAccess.outputs.require-result == 'false'
+        env:
+          trigger-actor: ${{ github.triggering_actor }}
+          actor-name: ${{ github.actor }}
+          permission: ${{ steps.checkAccess.outputs.user-permission }}
         run: |
-          echo "${{ github.triggering_actor }} does not have permissions on this repo."
-          echo "Current permission level is ${{ steps.checkAccess.outputs.user-permission }}"
-          echo "Job originally triggered by ${{ github.actor }}"
+          echo "${ trigger-actor } does not have permissions on this repo."
+          echo "Current permission level is ${ permission }"
+          echo "Job originally triggered by ${ actor-name }"
           exit 1
   set-matrix:
     runs-on: ubuntu-latest
@@ -109,13 +115,13 @@ jobs:
           name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp
       - name: Load image
-        run: docker load --input /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
+        run: docker load --input /tmp/rails-${MATRIX_RAILS}-${RUBY_VERSION}-image.tar
       - name: Run integration tests
         env:
           NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
-          mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest bin/rails test:system
+          mail-notify-integration-rails-${MATRIX_RAILS}-${RUBY_VERSION}:latest bin/rails test:system
   sending:
     strategy:
       fail-fast: false
@@ -134,13 +140,13 @@ jobs:
           name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp
       - name: Load image
-        run: docker load --input /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
+        run: docker load --input /tmp/rails-${MATRIX_RAILS}-${RUBY_VERSION}-image.tar
       - name: Run integration tests
         env:
           NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
-          mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest bin/rails test
+          mail-notify-integration-rails-${ MATRIX_RAILS }-${ RUBY_VERSION }:latest bin/rails test
   results:
     if: ${{ always() }}
     runs-on: ubuntu-latest
