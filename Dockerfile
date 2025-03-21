@@ -9,7 +9,7 @@ FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git
+    apt-get install --no-install-recommends -y build-essential curl git libyaml-dev
 
 # Install Rails
 ARG RAILS_VERSION=7.2.1
