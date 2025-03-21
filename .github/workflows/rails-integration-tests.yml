@@ -91,16 +91,16 @@ jobs:
       - name: Download image
         uses: actions/download-artifact@v4
         with:
-          name: rails-${{ matrix.rails }}-image
+          name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp
       - name: Load image
-        run: docker load --input /tmp/rails-${{ matrix.rails }}-image.tar
+        run: docker load --input /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
       - name: Run integration tests
         env:
           NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
-          mail-notify-integration-rails-${{ matrix.rails }}:latest bin/rails test:system
+          mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest bin/rails test:system
   sending:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
@@ -117,16 +117,16 @@ jobs:
       - name: Download image
         uses: actions/download-artifact@v4
         with:
-          name: rails-${{ matrix.rails }}-image
+          name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp
       - name: Load image
-        run: docker load --input /tmp/rails-${{ matrix.rails }}-image.tar
+        run: docker load --input /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
       - name: Run integration tests
         env:
           NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
-          mail-notify-integration-rails-${{ matrix.rails }}:latest bin/rails test
+          mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest bin/rails test
   results:
     if: ${{ always() }}
     runs-on: ubuntu-latest
