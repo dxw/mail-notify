@@ -1,6 +1,7 @@
 name: CodeQL Analysis
 
-permissions: {}
+permissions:
+  security-events: write
 
 on:
   pull_request:
