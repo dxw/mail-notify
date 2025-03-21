@@ -3,14 +3,28 @@ name: Rails integration tests
 permissions: {}
 
 on:
-  workflow_run:
-    workflows: ["Unit tests"]
-    types:
-      - completed
+  pull_request_target:
+    types: [opened, synchronize]
 
 jobs:
+  check-user-permission:
+    runs-on: ubuntu-latest
+    name: Check user permission
+    steps:
+      - name: Get User Permission
+        id: checkAccess
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+      - name: Check User Permission
+        if: steps.checkAccess.outputs.require-result == 'false'
+        run: |
+          echo "${{ github.triggering_actor }} does not have permissions on this repo."
+          echo "Current permission level is ${{ steps.checkAccess.outputs.user-permission }}"
+          echo "Job originally triggered by ${{ github.actor }}"
+          exit 1
   set-matrix:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     name: Set Rails versions
     outputs:
@@ -24,7 +38,6 @@ jobs:
           rails_versions=$(curl https://rubygems.org/api/v1/versions/rails.json | jq '[.[] | select(.number | test("beta") | not)] | group_by(.number[:1])[] | (.[0].number) | select(.[:1]|tonumber > 6)' | jq -s -c)
           echo "RAILS_VERSIONS=$rails_versions" >> $GITHUB_OUTPUT
   set-ruby-version:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     name: Set Ruby version
     outputs:
@@ -39,7 +52,6 @@ jobs:
         run: |
           echo "RUBY_VERSION=$(cat .ruby-version)" >> $GITHUB_OUTPUT
   build-rails:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       matrix:
@@ -76,7 +88,6 @@ jobs:
           name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
   mailer-previews:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       # Run against the latest 6.x.x and 7.x.x Rails versions
@@ -102,7 +113,6 @@ jobs:
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
           mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest bin/rails test:system
   sending:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       # Run against the latest 5.x.x, 6.x.x and 7.x.x Rails versions
