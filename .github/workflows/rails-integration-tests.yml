@@ -48,7 +48,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and cache Docker containers
     needs:
-      - codeql-sast
       - set-matrix
       - set-ruby-version
     steps:
@@ -85,7 +84,6 @@ jobs:
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
     needs:
-      - codeql-sast
       - set-matrix
       - set-ruby-version
       - build-rails
@@ -112,7 +110,6 @@ jobs:
         rails: ${{ fromJSON(needs.set-matrix.outputs.RAILS_VERSIONS) }}
     runs-on: ubuntu-latest
     needs:
-      - codeql-sast
       - set-matrix
       - set-ruby-version
       - build-rails
