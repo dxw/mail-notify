@@ -4,7 +4,7 @@ permissions: {}
 
 on:
   workflow_run:
-    workflows: [CodeQL Analysis, Linting, Unit tests]
+    workflows: ["CodeQL Analysis", "Linting", "Unit tests"]
     types:
       - completed
 
