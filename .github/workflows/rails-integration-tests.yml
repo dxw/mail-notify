@@ -149,7 +149,7 @@ jobs:
           NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
         run: |
           docker run --rm -e "NOTIFY_API_KEY=$NOTIFY_API_KEY" \
-          mail-notify-integration-rails-${MATRIX_RAILS }-${RUBY_VERSION}:latest bin/rails test
+          mail-notify-integration-rails-${MATRIX_RAILS}-${RUBY_VERSION}:latest bin/rails test
   results:
     if: ${{ always() }}
     runs-on: ubuntu-latest
