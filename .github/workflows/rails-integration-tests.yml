@@ -3,7 +3,7 @@ name: Rails integration tests
 permissions: {}
 on:
   pull_request_target:
-    types: [opened, synchronize]
+    types: [opened, synchronize] # zizmor: ignore[dangerous-triggers] - we have permission checks to ensure only owners can trigger this action
 
 jobs:
   check-user-permission:
