@@ -6,10 +6,13 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+## [2.1.0]
+
+- Support one click unsubscribe - thanks to @asmega ([#168](https://github.com/dxw/mail-notify/pull/168))
 - Fixed a bug in `view_mail` and `template_mail` that meant the options were being
-  included in the preview email headers for no reason - thanks to @inulty-dfe
+  included in the preview email headers for no reason - thanks to @inulty-dfe ([#165](https://github.com/dxw/mail-notify/pull/165))
 - Fixed a bug in `view_mail` that meant custom headers in the preview email were
-  duplicated - thanks to @inulty-dfe
+  duplicated - thanks to @inulty-dfe ([#165](https://github.com/dxw/mail-notify/pull/165))
 
 ## [2.0.0] - 2024-04-01
 
