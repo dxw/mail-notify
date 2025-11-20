@@ -51,7 +51,7 @@ jobs:
       RUBY_VERSION: ${{ steps.set-ruby-version.outputs.RUBY_VERSION }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - id: set-ruby-version
@@ -71,7 +71,7 @@ jobs:
       - set-ruby-version
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Set up Docker Buildx
