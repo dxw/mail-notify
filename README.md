@@ -4,7 +4,7 @@
 [![Rails integration tests](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml/badge.svg)](https://github.com/dxw/mail-notify/actions/workflows/rails-integration-tests.yml)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
 
-# mail-notify
+# mail-notify 
 
 Rails plugin for [GOV.UK Notify](https://www.notifications.service.gov.uk).
 
