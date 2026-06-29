@@ -19,13 +19,13 @@ jobs:
       - name: Check User Permission
         if: steps.checkAccess.outputs.require-result == 'false'
         env:
-          trigger-actor: ${{ github.triggering_actor }}
-          actor-name: ${{ github.actor }}
+          TRIGGER_ACTOR: ${{ github.triggering_actor }}
+          ACTOR_NAME: ${{ github.actor }}
           permission: ${{ steps.checkAccess.outputs.user-permission }}
         run: |
-          echo "${ trigger-actor } does not have permissions on this repo."
-          echo "Current permission level is ${ permission }"
-          echo "Job originally triggered by ${ actor-name }"
+          echo "${TRIGGER_ACTOR} does not have permissions on this repo."
+          echo "Current permission level is ${permission}"
+          echo "Job originally triggered by ${ACTOR_NAME}"
           exit 1
   set-matrix:
     runs-on: ubuntu-latest
