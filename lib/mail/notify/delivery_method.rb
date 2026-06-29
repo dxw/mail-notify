@@ -28,7 +28,7 @@ module Mail
         template_id = message.template_id
         personalisation = message.personalisation
 
-        Rails.logger.info("Getting Notify preview for template id #{template_id}")
+        Rails.logger&.info("Getting Notify preview for template id #{template_id}") if Rails.respond_to?(:logger)
         client.generate_template_preview(template_id, personalisation: personalisation)
       end
 
