@@ -82,16 +82,16 @@ module Mail
         #
         # We do not pass the headers as the call to `mail` will keep adding headers resulting in
         # duplication when we have to call it again later.
-        body = mail.body.raw_source
-
-        # The 'view mail' works by sending a subject and body as personalisation options, these are
-        # then used in the Notify template to provide content.
-        message.personalisation = {subject: subject, body: body}
+        body = mail.body.raw_source.gsub(/\r?\n/, "\r\n")
 
         mail(headers) do |format|
           format.text { nil }
           format.html { nil }
         end
+
+        # The 'view mail' works by sending a subject and body as personalisation options, these are
+        # then used in the Notify template to provide content.
+        message.personalisation = {subject: subject, body: body}
       end
 
       ##
