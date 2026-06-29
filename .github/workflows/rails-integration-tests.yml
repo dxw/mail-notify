@@ -19,13 +19,13 @@ jobs:
       - name: Check User Permission
         if: steps.checkAccess.outputs.require-result == 'false'
         env:
-          trigger-actor: ${{ github.triggering_actor }}
-          actor-name: ${{ github.actor }}
+          TRIGGER_ACTOR: ${{ github.triggering_actor }}
+          ACTOR_NAME: ${{ github.actor }}
           permission: ${{ steps.checkAccess.outputs.user-permission }}
         run: |
-          echo "${ trigger-actor } does not have permissions on this repo."
-          echo "Current permission level is ${ permission }"
-          echo "Job originally triggered by ${ actor-name }"
+          echo "${TRIGGER_ACTOR} does not have permissions on this repo."
+          echo "Current permission level is ${permission}"
+          echo "Job originally triggered by ${ACTOR_NAME}"
           exit 1
   set-matrix:
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
           cache-from: type=gha,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
           cache-to: type=gha,mode=min,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image
           path: /tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
@@ -110,7 +110,7 @@ jobs:
       - build-rails
     steps:
       - name: Download image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: rails-${{ env.MATRIX_RAILS }}-${{ env.RUBY_VERSION }}-image
           path: /tmp
@@ -138,7 +138,7 @@ jobs:
       - build-rails
     steps:
       - name: Download image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: rails-${{ env.MATRIX_RAILS }}-${{ env.RUBY_VERSION }}-image
           path: /tmp
