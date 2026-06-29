@@ -21,7 +21,7 @@ module Mail
           one_click_unsubscribe_url: message.one_click_unsubscribe_url
         }
 
-        client.send_email(params.compact)
+        self.response = client.send_email(params.compact)
       end
 
       def preview(message)
