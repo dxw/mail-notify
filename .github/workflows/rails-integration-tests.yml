@@ -88,7 +88,6 @@ jobs:
           tags: mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest
           outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
           cache-from: type=gha,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
-          cache-to: type=gha,mode=min,ignore-error=true,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
