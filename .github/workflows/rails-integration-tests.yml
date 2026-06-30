@@ -17,7 +17,7 @@ jobs:
           require: write
           username: ${{ github.triggering_actor }}
       - name: Check User Permission
-        if: steps.checkAccess.outputs.require-result == 'false'
+        if: steps.checkAccess.outputs.require-result == 'false' && github.triggering_actor != 'renovate[bot]' && github.triggering_actor != 'dependabot[bot]'
         env:
           TRIGGER_ACTOR: ${{ github.triggering_actor }}
           ACTOR_NAME: ${{ github.actor }}
