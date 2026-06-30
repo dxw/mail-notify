@@ -1,8 +1,32 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:best-practices",
+    ":approveMajorUpdates",
+    ":automergeLinters",
+    ":automergePatch",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks",
+    ":automergeTesters",
+    ":enablePreCommit"
   ],
-  "dependencyDashboard": false,
-  "ignoreDeps": ["ruby-version"]
+  "timezone": "Europe/London",
+  "platformAutomerge": true,
+  "automergeSchedule": ["after 10am every weekday", "before 4pm every weekday"],
+  "minimumReleaseAge": "3 days",
+  "packageRules": [
+    {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "5 days"
+    },
+    {
+      "matchCategories": "ruby",
+      "matchDepNames": "rails",
+      "matchUpdateTypes": ["major", "minor"],
+      "prBodyNotes": [
+        ":warning: Remember to follow the [standard Rails upgrade process](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#the-upgrade-process)"
+      ]
+    }
+  ],
+  "labels": ["dependencies"]
 }
