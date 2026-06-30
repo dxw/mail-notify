@@ -77,7 +77,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and cache
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
@@ -88,7 +88,6 @@ jobs:
           tags: mail-notify-integration-rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}:latest
           outputs: type=docker, dest=/tmp/rails-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}-image.tar
           cache-from: type=gha,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
-          cache-to: type=gha,mode=min,ignore-error=true,scope=build-${{ matrix.rails }}-${{ needs.set-ruby-version.outputs.RUBY_VERSION }}
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
