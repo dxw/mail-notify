@@ -4,13 +4,15 @@ require "spec_helper"
 require "mailers/test_mailer"
 
 RSpec.describe Mail::Notify::DeliveryMethod do
-  let(:mock_notifications_client) do
+  let!(:mock_notifications_client) do
     notifications_client = double(Notifications::Client)
-    allow(notifications_client).to receive(:send_email)
+    allow(notifications_client).to receive(:send_email).and_return(notification_response)
     allow(notifications_client).to receive(:generate_template_preview)
     allow(Notifications::Client).to receive(:new).and_return(notifications_client)
     notifications_client
   end
+
+  let(:notification_response) { double(Notifications::Client::Notification) }
 
   let(:api_key) do
     "staging-e1f4c969-b675-4a0d-a14d-623e7c2d3fd8-24fea27b-824e-4259-b5ce-1badafe98150"
@@ -23,6 +25,22 @@ RSpec.describe Mail::Notify::DeliveryMethod do
       api_key: api_key
     }
   end
+
+  shared_examples "sets and returns notification response" do
+    it "returns the notification response" do
+      response = message.delivery_method.deliver!(message)
+
+      expect(response).to eq(notification_response)
+    end
+
+    it "sets 'response' attribute on the delivery method object" do
+      delivery_method = message.delivery_method
+      response = delivery_method.deliver!(message)
+
+      expect(delivery_method.response).to eq(notification_response)
+    end
+  end
+
 
   describe "settings" do
     let(:notify) { double(:notify) }
@@ -85,6 +103,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
             personalisation: {}
           )
         end
+
+        include_examples "sets and returns notification response"
       end
 
       describe "#preview" do
@@ -98,6 +118,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
             {personalisation: {}}
           )
         end
+
+        include_examples "sets and returns notification response"
       end
     end
 
@@ -122,6 +144,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
             personalisation: {age: "25", name: "Name"}
           )
         end
+
+        include_examples "sets and returns notification response"
       end
 
       describe "#preview" do
@@ -135,6 +159,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
             {personalisation: {age: "25", name: "Name"}}
           )
         end
+
+        include_examples "sets and returns notification response"
       end
     end
   end
@@ -160,6 +186,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           personalisation: {subject: "Another subject", body: "This is the body from the mailers view.\r\n"}
         )
       end
+
+      include_examples "sets and returns notification response"
     end
 
     describe "#preview" do
@@ -173,17 +201,21 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           {personalisation: {subject: "Another subject", body: "This is the body from the mailers view.\r\n"}}
         )
       end
+
+      include_examples "sets and returns notification response"
     end
   end
 
   describe "Notify optional fields" do
     context "when no optional fields present" do
-      it "optional fields not present in the call to the Notify API" do
-        message = TestMailer.with(
+      let(:message) do
+        TestMailer.with(
           template_id: "test-id",
           to: "test.name@email.co.uk"
         ).test_template_mail
+      end
 
+      it "optional fields not present in the call to the Notify API" do
         notifications_client = mock_notifications_client
 
         message.delivery_method.deliver!(message)
@@ -194,16 +226,20 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           personalisation: {}
         )
       end
+
+      include_examples "sets and returns notification response"
     end
 
     describe "email_reply_to_id" do
-      it "is present in the API call when set" do
-        message = TestMailer.with(
+      let(:message) do
+        TestMailer.with(
           template_id: "test-id",
           to: "test.name@email.co.uk",
           reply_to_id: "test-reply-to-id"
         ).test_template_mail
+      end
 
+      it "is present in the API call when set" do
         notifications_client = mock_notifications_client
 
         message.delivery_method.deliver!(message)
@@ -215,16 +251,20 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           email_reply_to_id: "test-reply-to-id"
         )
       end
+
+      include_examples "sets and returns notification response"
     end
 
     describe "reference" do
-      it "is present in the API call when set" do
-        message = TestMailer.with(
+      let(:message) do
+        TestMailer.with(
           template_id: "test-id",
           to: "test.name@email.co.uk",
           reference: "test-reference"
         ).test_template_mail
+      end
 
+      it "is present in the API call when set" do
         notifications_client = mock_notifications_client
 
         message.delivery_method.deliver!(message)
@@ -236,18 +276,21 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           reference: "test-reference"
         )
       end
+
+      include_examples "sets and returns notification response"
     end
 
     describe "one_click_unsubscribe_url" do
-      it "is present in the API call when set" do
-        one_click_unsubscribe_url = "https://www.example.com/unsubscribe?opaque=123"
-
-        message = TestMailer.with(
+      let(:one_click_unsubscribe_url) { "https://www.example.com/unsubscribe?opaque=123" }
+      let(:message) do
+        TestMailer.with(
           template_id: "test-id",
           to: "test.name@email.co.uk",
           one_click_unsubscribe_url:
         ).test_template_mail
+      end
 
+      it "is present in the API call when set" do
         notifications_client = mock_notifications_client
 
         message.delivery_method.deliver!(message)
@@ -259,6 +302,8 @@ RSpec.describe Mail::Notify::DeliveryMethod do
           one_click_unsubscribe_url:
         )
       end
+
+      include_examples "sets and returns notification response"
     end
   end
 end

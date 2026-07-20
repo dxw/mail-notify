@@ -24,7 +24,7 @@ And then execute:
 
 ## Configuration
 
-Configure in each environment `config/environments/*.rb` (where * is `test`,
+Configure in each environment `config/environments/*.rb` (where \* is `test`,
 `development`, `production` or whatever other environment(s) you have) file(s):
 
 ```ruby
@@ -107,7 +107,7 @@ class MyCustomMailer < ApplicationMailer
         appointment_date = params[:appointment_date]
 
         template_mail(
-            "NOTIFY_TEMPLATE_ID", 
+            "NOTIFY_TEMPLATE_ID",
             to: to,
             personalisation: {
                 name: name,
@@ -119,8 +119,8 @@ end
 
 # call the template mailer with personalisation options
 MyCustomMailer.with(
-    to: "first.last@example.com", 
-    name: "First Last", 
+    to: "first.last@example.com",
+    name: "First Last",
     appointment_date: Date.new(2024, 01, 01)
 ).appointment_email.deliver_now!
 ```
@@ -188,7 +188,7 @@ Then call the mailer as usual:
 
 ```ruby
 MyCustomMailer.with(
-    to: "first.last@example.com", 
+    to: "first.last@example.com",
     subject: "Welcome to service"
 ).welcome_email.deliver_now!
 
@@ -196,6 +196,22 @@ MyCustomMailer.with(
 
 Only plain text views can be used, with the Notify markdown like formatting
 options. The email is sent as both HTML and plain text by Notify.
+
+#### Accessing the GOV.UK Notify response
+
+The [response](https://docs.notifications.service.gov.uk/ruby.html#get-the-data-for-one-message-response) returned by GOV.UK Notify is set on the delivery method after sending. This makes it easy to retrieve the notification ID (UUID) or other response attributes such as status.
+
+Usage example:
+
+```ruby
+message = MyCustomMailer.with(
+    to: "first.last@example.com",
+    subject: "Welcome to service"
+).welcome_email.deliver_now!
+
+# This then returns an instance of Notifications::Client::Notification (https://github.com/alphagov/notifications-ruby-client/blob/main/lib/notifications/client/notification.rb)
+message.delivery_method.response
+```
 
 #### With optional Notify arguments
 
@@ -225,7 +241,7 @@ end
 
 # call the mailer
 MyCustomMailer.with(
-        to: "first.last@example.com", 
+        to: "first.last@example.com",
         reference: "YOUR_REFERENCE",
         reply_to_id: "YOUR_REPLY_TO"
     ).welcome_email.deliver_now!
