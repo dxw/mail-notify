@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", ">= 2.0"
-  spec.add_development_dependency "simplecov", "~> 0.21"
+  spec.add_development_dependency "simplecov", "~> 1.0"
   spec.add_development_dependency "simplecov-lcov"
   spec.add_development_dependency "debug"
   spec.add_development_dependency "rails", "7.2.2.1"
